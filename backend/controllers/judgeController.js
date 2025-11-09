@@ -30,11 +30,11 @@ const submitSolution = async (req, res) => {
       });
     }
 
-    if (!['python', 'cpp', 'java'].includes(language)) {
+    if (!['python', 'cpp', 'java', 'javascript'].includes(language)) {
       console.log('Validation failed: Invalid language');
       return res.status(400).json({
         success: false,
-        message: 'Invalid language. Must be python, cpp, or java'
+        message: 'Invalid language. Must be python, cpp, java, or javascript'
       });
     }
 
@@ -157,7 +157,11 @@ async function runTests(submissionId, code, language, testcases) {
         const modifiedCode = code.replace(/public\s+class\s+\w+/g, 'public class Solution');
         await fs.writeFile(path.join(tempDir, fileName), modifiedCode);
         compileCmd = `javac Solution.java`;
-        runCmd = (inputFile) => `./solution < "${inputFile}"`;
+        runCmd = (inputFile) => `java Solution < "${inputFile}"`;
+      } else if (language === 'javascript') {
+        fileName = 'solution.js';
+        await fs.writeFile(path.join(tempDir, fileName), code);
+        runCmd = (inputFile) => `node solution.js < "${inputFile}"`;
       }
 
       addLog(submission, `📝 Language: ${language}, File: ${fileName}`, 'info');

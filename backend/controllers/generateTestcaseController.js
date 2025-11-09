@@ -1,6 +1,6 @@
 const Testcase = require('../models/testcase');
 const Problem = require('../models/problem');
-const { generateTestcases } = require('../services/ai');
+const pregeneratedTestcases = require('../pregenerated/testcases');
 
 // Generate new testcases for a problem
 const generateNewTestcases = async (req, res) => {
@@ -27,26 +27,29 @@ const generateNewTestcases = async (req, res) => {
       });
     }
 
-    // Generate testcases using AI
-    console.log('Generating testcases for problem:', problem.title);
-    console.log('Problem has examples:', problem.examples?.length || 0);
-    console.log('Problem description length:', problem.description?.length || 0);
-    console.log('Problem constraints length:', problem.constraints?.length || 0);
-    
-    const testcaseData = await generateTestcases({
-      problemTitle: problem.title,
-      problemDescription: problem.description || '',
-      examples: problem.examples || [],
-      constraints: problem.constraints || '',
-      inputFormat: problem.inputFormat || '',
-      outputFormat: problem.outputFormat || ''
-    });
+    // Simulate delay
+    await new Promise(resolve => setTimeout(resolve, Math.random() * 2000 + 5000)); // 5-7 seconds delay
+
+    const testcaseData = pregeneratedTestcases[problem.title];
+
+    if (!testcaseData) {
+        return res.status(404).json({
+            success: false,
+            message: 'Pregenerated test cases not found for this problem'
+        });
+    }
+
+    const formattedTestcases = testcaseData.map(tc => ({
+        type: 'basic', // Assuming all are basic for now
+        input: Array.isArray(tc.input) ? tc.input.join(', ') : tc.input,
+        output: tc.output.toString()
+    }));
 
     // Save testcases to database
     const newTestcases = new Testcase({
       problemId,
       userId,
-      testcases: testcaseData.testcases
+      testcases: formattedTestcases
     });
 
     await newTestcases.save();

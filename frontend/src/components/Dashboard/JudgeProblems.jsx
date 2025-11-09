@@ -103,7 +103,24 @@ public class Solution {
         
         sc.close();
     }
-}`
+}`,
+    javascript: `// Write your solution here
+// Use console.log for output
+
+function solve() {
+    // In a real judge, you would read from process.stdin.
+    // For simplicity, you can assume input is pre-loaded
+    // or handle it via standard input methods if the judge supports it.
+    
+    // Example:
+    // const input = require('fs').readFileSync(0, 'utf-8');
+    // const lines = input.split('\n');
+    
+    let result = "Hello from JavaScript!";
+    console.log(result);
+}
+
+solve();`
   };
 
   useEffect(() => {
@@ -759,6 +776,7 @@ public class Solution {
                     onChange={(e) => setSelectedLanguage(e.target.value)}
                     className="bg-gray-700 text-white px-3 py-1.5 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-600"
                   >
+                    <option value="javascript">JavaScript</option>
                     <option value="python">Python 3</option>
                     <option value="cpp">C++ 17</option>
                     <option value="java">Java 11</option>

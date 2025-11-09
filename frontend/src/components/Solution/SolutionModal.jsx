@@ -3,12 +3,16 @@ import { X, Copy, Check, Code, Loader2 } from 'lucide-react';
 import { showToast } from '../Toast/CustomToast';
 
 const SolutionModal = ({ isOpen, onClose, solution, loading }) => {
-  const [selectedLanguage, setSelectedLanguage] = useState('python');
+  const [selectedLanguage, setSelectedLanguage] = useState('cpp');
   const [copiedStates, setCopiedStates] = useState({});
 
   if (!isOpen) return null;
 
   const handleCopy = (code, language) => {
+    if (!code) {
+      showToast.info('No code available to copy.');
+      return;
+    }
     navigator.clipboard.writeText(code);
     setCopiedStates({ ...copiedStates, [language]: true });
     showToast.success(`${language.toUpperCase()} code copied!`);
@@ -22,6 +26,10 @@ const SolutionModal = ({ isOpen, onClose, solution, loading }) => {
     if (!solution?.codes) return '';
     const codeObj = solution.codes.find(c => c.language === selectedLanguage);
     return codeObj?.code || '';
+  };
+
+  const codeExistsForLanguage = (lang) => {
+    return solution?.codes?.some(c => c.language === lang);
   };
 
   // Helper function to format text with inline code and bold markers
@@ -44,7 +52,8 @@ const SolutionModal = ({ isOpen, onClose, solution, loading }) => {
   const languageColors = {
     python: { bg: 'bg-blue-500/20', border: 'border-blue-400/50', text: 'text-blue-300', hover: 'hover:bg-blue-500/30' },
     cpp: { bg: 'bg-purple-500/20', border: 'border-purple-400/50', text: 'text-purple-300', hover: 'hover:bg-purple-500/30' },
-    java: { bg: 'bg-orange-500/20', border: 'border-orange-400/50', text: 'text-orange-300', hover: 'hover:bg-orange-500/30' }
+    java: { bg: 'bg-orange-500/20', border: 'border-orange-400/50', text: 'text-orange-300', hover: 'hover:bg-orange-500/30' },
+    javascript: { bg: 'bg-yellow-500/20', border: 'border-yellow-400/50', text: 'text-yellow-300', hover: 'hover:bg-yellow-500/30' }
   };
 
   return (
@@ -170,22 +179,37 @@ const SolutionModal = ({ isOpen, onClose, solution, loading }) => {
                 </div>
 
                 {/* Language Tabs */}
-                <div className="flex gap-2 mb-4">
-                  {['python', 'cpp', 'java'].map((lang) => {
+                <div className="flex gap-2 mb-4 flex-wrap">
+                  {['cpp', 'python', 'javascript', 'java'].map((lang) => {
                     const colors = languageColors[lang];
                     const isActive = selectedLanguage === lang;
+                    const codeExists = codeExistsForLanguage(lang);
+
                     return (
-                      <button
-                        key={lang}
-                        onClick={() => setSelectedLanguage(lang)}
-                        className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all border-2 ${
-                          isActive
-                            ? `${colors.bg} ${colors.border} ${colors.text}`
-                            : `border-[#004052] text-gray-400 ${colors.hover}`
-                        }`}
-                      >
-                        {lang === 'cpp' ? 'C++' : lang.charAt(0).toUpperCase() + lang.slice(1)}
-                      </button>
+                      <div key={lang} className="relative">
+                        <button
+                          onClick={() => {
+                            if (codeExists) {
+                              setSelectedLanguage(lang);
+                            } else {
+                              showToast.info(`Solution for ${lang === 'cpp' ? 'C++' : lang.toUpperCase()} is not available yet.`);
+                            }
+                          }}
+                          className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all border-2 ${
+                            isActive
+                              ? `${colors.bg} ${colors.border} ${colors.text}`
+                              : `border-[#004052] text-gray-400 ${codeExists ? colors.hover : 'opacity-50 cursor-not-allowed'}`
+                          }`}
+                          title={!codeExists ? `Solution for ${lang === 'cpp' ? 'C++' : lang.toUpperCase()} is not available yet.` : `Switch to ${lang === 'cpp' ? 'C++' : lang.toUpperCase()}`}
+                        >
+                          {lang === 'cpp' ? 'C++' : lang.charAt(0).toUpperCase() + lang.slice(1)}
+                        </button>
+                        {!codeExists && (
+                          <div className="absolute -top-2 -right-2 bg-red-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full shadow-lg">
+                            N/A
+                          </div>
+                        )}
+                      </div>
                     );
                   })}
                 </div>
@@ -201,7 +225,7 @@ const SolutionModal = ({ isOpen, onClose, solution, loading }) => {
                         <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
                       </div>
                       <span className="text-gray-400 text-xs font-mono ml-3">
-                        solution.{selectedLanguage === 'cpp' ? 'cpp' : selectedLanguage === 'java' ? 'java' : 'py'}
+                        solution.{selectedLanguage === 'cpp' ? 'cpp' : selectedLanguage === 'java' ? 'java' : selectedLanguage === 'javascript' ? 'js' : 'py'}
                       </span>
                     </div>
                     <button
@@ -227,9 +251,9 @@ const SolutionModal = ({ isOpen, onClose, solution, loading }) => {
                     {/* Line Numbers */}
                     <div className="bg-[#00151a] border-r border-[#004052] px-3 py-4 select-none">
                       <pre className="text-gray-500 text-xs font-mono leading-relaxed text-right">
-                        {getLanguageCode().split('\n').map((_, idx) => (
+                        {getLanguageCode() ? getLanguageCode().split('\n').map((_, idx) => (
                           <div key={idx} className="h-[21px]">{idx + 1}</div>
-                        ))}
+                        )) : <div className="h-[21px]">1</div>}
                       </pre>
                     </div>
                     
@@ -237,7 +261,17 @@ const SolutionModal = ({ isOpen, onClose, solution, loading }) => {
                     <div className="flex-1 px-4 py-4 overflow-x-auto">
                       <pre className="text-sm font-mono leading-relaxed">
                         <code className="text-gray-200">
-                          {getLanguageCode()}
+                          {getLanguageCode() || (
+                            <div className="flex flex-col items-center justify-center py-12">
+                              <div className="text-center">
+                                <div className="text-6xl mb-4">🚧</div>
+                                <p className="text-gray-400 text-base mb-2">Solution not available yet</p>
+                                <p className="text-gray-500 text-sm">
+                                  {selectedLanguage === 'cpp' ? 'C++' : selectedLanguage.charAt(0).toUpperCase() + selectedLanguage.slice(1)} implementation is coming soon!
+                                </p>
+                              </div>
+                            </div>
+                          )}
                         </code>
                       </pre>
                     </div>

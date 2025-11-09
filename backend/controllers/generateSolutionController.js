@@ -1,8 +1,8 @@
 const Solution = require('../models/solution');
 const Problem = require('../models/problem');
-const { generateSolution } = require('../services/ai');
+const pregeneratedSolutions = require('../pregenerated/solutions');
 
-// @desc    Generate solution for a problem using Gemini AI
+// @desc    Generate solution for a problem
 // @route   POST /api/generate-solution/:problemId
 // @access  Private
 const generateNewSolution = async (req, res) => {
@@ -35,29 +35,30 @@ const generateNewSolution = async (req, res) => {
         data: existingSolution
       });
     }
+    
+    // Simulate delay
+    await new Promise(resolve => setTimeout(resolve, Math.random() * 2000 + 5000)); // 5-7 seconds delay
 
-    // Generate solution using Gemini AI
-    const generatedSolutionData = await generateSolution({
-      problemTitle: problem.title,
-      problemDescription: problem.description,
-      examples: problem.examples,
-      constraints: problem.constraints,
-      timeComplexity: problem.timeComplexity,
-      spaceComplexity: problem.spaceComplexity,
-      topics: problem.topics,
-      rating: problem.rating
-    });
+    const solutionCode = pregeneratedSolutions[problem.title];
+
+    if (!solutionCode) {
+        return res.status(404).json({
+            success: false,
+            message: 'Pregenerated solution not found for this problem'
+        });
+    }
 
     // Save solution to database
     const solution = new Solution({
       problemId,
       userId: req.user._id,
-      algorithmExplanation: generatedSolutionData.algorithmExplanation,
-      codes: generatedSolutionData.codes,
-      timeComplexity: generatedSolutionData.timeComplexity,
-      spaceComplexity: generatedSolutionData.spaceComplexity,
-      keyPoints: generatedSolutionData.keyPoints || [],
-      edgeCases: generatedSolutionData.edgeCases || [],
+      algorithmExplanation: "This is a pregenerated explanation.",
+                  codes: [{
+          language: 'cpp',
+          code: solutionCode
+      }],
+      timeComplexity: problem.timeComplexity || 'N/A',
+      spaceComplexity: problem.spaceComplexity || 'N/A',
       generatedAt: new Date()
     });
 

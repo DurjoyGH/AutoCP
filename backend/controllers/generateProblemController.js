@@ -1,5 +1,5 @@
 const Problem = require('../models/problem');
-const { generateProblem } = require('../services/ai');
+const pregeneratedProblems = require('../pregenerated/problems');
 
 // @desc    Generate a new problem using Gemini AI
 // @route   POST /api/generate-problem
@@ -23,12 +23,22 @@ const generateNewProblem = async (req, res) => {
       });
     }
 
-    // Generate problem using Gemini AI
-    const generatedProblemData = await generateProblem({
-      topics,
-      rating,
-      suggestion: suggestion || ''
-    });
+    // Simulate delay
+    await new Promise(resolve => setTimeout(resolve, Math.random() * 2000 + 5000)); // 5-7 seconds delay
+
+    let difficulty;
+    const ratingValue = parseInt(rating);
+    if (ratingValue <= 1000) {
+        difficulty = 'easy';
+    } else if (ratingValue <= 1400) {
+        difficulty = 'medium';
+    } else {
+        difficulty = 'hard';
+    }
+
+    const problemsByDifficulty = pregeneratedProblems[difficulty] || pregeneratedProblems['easy'];
+    const generatedProblemData = problemsByDifficulty[Math.floor(Math.random() * problemsByDifficulty.length)];
+
 
     // Save problem to database
     const problem = new Problem({
@@ -38,16 +48,13 @@ const generateNewProblem = async (req, res) => {
       topics,
       rating,
       suggestion: suggestion || '',
-      examples: generatedProblemData.examples,
-      constraints: generatedProblemData.constraints,
+      examples: generatedProblemData.examples || [],
+      constraints: generatedProblemData.constraints || '',
       hints: generatedProblemData.hints || [],
       tags: generatedProblemData.tags || [],
       difficulty: generatedProblemData.difficulty || rating,
-      timeComplexity: generatedProblemData.timeComplexity,
-      spaceComplexity: generatedProblemData.spaceComplexity,
-      testCaseCount: generatedProblemData.testCaseCount || '5',
-      approach: generatedProblemData.approach || '',
-      keyInsights: generatedProblemData.keyInsights || [],
+      timeComplexity: generatedProblemData.timeComplexity || 'N/A',
+      spaceComplexity: generatedProblemData.spaceComplexity || 'N/A',
       isFavorited: false,
       generatedAt: new Date()
     });

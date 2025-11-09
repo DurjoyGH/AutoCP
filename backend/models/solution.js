@@ -4,7 +4,7 @@ const codeSchema = new mongoose.Schema({
   language: {
     type: String,
     required: true,
-    enum: ['python', 'cpp', 'java']
+        enum: ['python', 'cpp', 'java', 'javascript']
   },
   code: {
     type: String,
