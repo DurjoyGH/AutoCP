@@ -39,13 +39,19 @@ const generateNewSolution = async (req, res) => {
     // Simulate delay
     await new Promise(resolve => setTimeout(resolve, Math.random() * 2000 + 5000)); // 5-7 seconds delay
 
-    const solutionCode = pregeneratedSolutions[problem.title];
+    const solutionData = pregeneratedSolutions[problem.title];
 
-    if (!solutionCode) {
+    if (!solutionData) {
         return res.status(404).json({
             success: false,
             message: 'Pregenerated solution not found for this problem'
         });
+    }
+
+    // Prepare codes array from the solution data
+    const codes = [];
+    for (const [lang, code] of Object.entries(solutionData)) {
+        codes.push({ language: lang, code });
     }
 
     // Save solution to database
@@ -53,10 +59,7 @@ const generateNewSolution = async (req, res) => {
       problemId,
       userId: req.user._id,
       algorithmExplanation: "This is a pregenerated explanation.",
-                  codes: [{
-          language: 'cpp',
-          code: solutionCode
-      }],
+      codes,
       timeComplexity: problem.timeComplexity || 'N/A',
       spaceComplexity: problem.spaceComplexity || 'N/A',
       generatedAt: new Date()

@@ -50,6 +50,19 @@ const problems = {
             constraints: "1 <= arr.length <= 1000\n-1000 <= arr[i] <= 1000",
             timeComplexity: "O(n^2)",
             spaceComplexity: "O(1)"
+        },
+        {
+            title: "Noman's GCD Sum Challenge",
+            description: "Noman is an AutoCP developer from Jashore University of Science and Technology (JUST). In his latest project, he's working on a complex mathematical computation that requires calculating the sum of the greatest common divisors (GCD) of a number N with all integers from 1 to N. This problem, known as the GCD sum function, is a fundamental concept in number theory with applications in cryptography, combinatorics, and advanced algorithms. The naive approach of computing GCD(i, N) for each i would be too slow for large N, so Noman needs to implement an efficient solution using the formula: sum_{i=1}^N GCD(i, N) = sum_{d|N} d × φ(N/d), where φ is Euler's totient function. This requires understanding the properties of divisors and the totient function. As Noman delves deeper, he realizes this problem tests not just programming skills but also mathematical insight. He must handle large values of N efficiently, considering that N can be up to 10^7 for optimal performance. Edge cases include N=1 (sum=1), prime numbers, and highly composite numbers. This challenge pushes the boundaries of both algorithmic thinking and number theory application in competitive programming, requiring implementation of divisor enumeration, totient function computation, and careful handling of large numbers to avoid overflow.",
+            difficulty: "Easy",
+            tags: ["math", "gcd", "number theory", "euler totient", "easy"],
+            examples: [
+                { input: "6", output: "15", explanation: "GCD(1,6)=1, GCD(2,6)=2, GCD(3,6)=3, GCD(4,6)=2, GCD(5,6)=1, GCD(6,6)=6. Sum = 1+2+3+2+1+6 = 15." },
+                { input: "12", output: "40", explanation: "The sum of GCD(i, 12) for i=1 to 12 equals 40. This demonstrates the formula with multiple divisors." }
+            ],
+            constraints: "1 <= N <= 10^7",
+            timeComplexity: "O(sqrt(N))",
+            spaceComplexity: "O(sqrt(N))"
         }
     ],
     medium: [

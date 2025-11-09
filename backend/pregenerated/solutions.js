@@ -1,5 +1,6 @@
 const solutions = {
-    "Noman's First Array": `#include <iostream>
+    "Noman's First Array": {
+        cpp: `#include <iostream>
 #include <vector>
 using namespace std;
 
@@ -19,8 +20,21 @@ int main() {
     cout << sum << endl;
     return 0;
 }`,
+        javascript: `const fs = require('fs');
+const input = fs.readFileSync(0, 'utf-8').trim().split(/\s+/);
+let idx = 0;
+let n = parseInt(input[idx++]);
+let arr = [];
+for (let i = 0; i < n; i++) {
+    arr.push(parseInt(input[idx++]));
+}
+let sum = 0;
+for (let num of arr) sum += num;
+console.log(sum);`
+    },
 
-    "Pushpita's String Reversal": `#include <iostream>
+    "Pushpita's String Reversal": {
+        cpp: `#include <iostream>
 #include <string>
 #include <algorithm>
 using namespace std;
@@ -33,9 +47,11 @@ int main() {
     
     cout << str << endl;
     return 0;
-}`,
+}`
+    },
 
-    "Tahmid's Two Sum Problem": `#include <iostream>
+    "Tahmid's Two Sum Problem": {
+        cpp: `#include <iostream>
 #include <vector>
 #include <unordered_map>
 using namespace std;
@@ -61,9 +77,11 @@ int main() {
     
     cout << endl;
     return 0;
-}`,
+}`
+    },
 
-    "Durjoy's Bubble Sort Challenge": `#include <iostream>
+    "Durjoy's Bubble Sort Challenge": {
+        cpp: `#include <iostream>
 #include <vector>
 using namespace std;
 
@@ -89,9 +107,11 @@ int main() {
     }
     cout << endl;
     return 0;
-}`,
+}`
+    },
 
-    "Tahmid's Binary Search Challenge": `#include <iostream>
+    "Tahmid's Binary Search Challenge": {
+        cpp: `#include <iostream>
 #include <vector>
 using namespace std;
 
@@ -119,9 +139,11 @@ int main() {
     
     cout << -1 << endl;
     return 0;
-}`,
+}`
+    },
 
-    "Noman's Palindrome Quest": `#include <iostream>
+    "Noman's Palindrome Quest": {
+        cpp: `#include <iostream>
 #include <string>
 using namespace std;
 
@@ -140,9 +162,11 @@ int main() {
     
     cout << (isPalindrome ? "true" : "false") << endl;
     return 0;
-}`,
+}`
+    },
 
-    "Pushpita's Coin Change": `#include <iostream>
+    "Pushpita's Coin Change": {
+        cpp: `#include <iostream>
 #include <vector>
 #include <algorithm>
 #include <climits>
@@ -170,9 +194,11 @@ int main() {
     
     cout << (dp[amount] == INT_MAX ? -1 : dp[amount]) << endl;
     return 0;
-}`,
+}`
+    },
 
-    "Tahmid's Merge Sort Implementation": `#include <iostream>
+    "Tahmid's Merge Sort Implementation": {
+        cpp: `#include <iostream>
 #include <vector>
 using namespace std;
 
@@ -224,9 +250,11 @@ int main() {
     }
     cout << endl;
     return 0;
-}`,
+}`
+    },
 
-    "Durjoy's Dijkstra Algorithm": `#include <iostream>
+    "Durjoy's Dijkstra Algorithm": {
+        cpp: `#include <iostream>
 #include <vector>
 #include <queue>
 #include <unordered_map>
@@ -288,9 +316,11 @@ int main() {
     }
     cout << endl;
     return 0;
-}`,
+}`
+    },
 
-    "Machine Learning Model by Pushpita": `#include <iostream>
+    "Machine Learning Model by Pushpita": {
+        cpp: `#include <iostream>
 #include <vector>
 #include <algorithm>
 using namespace std;
@@ -308,9 +338,11 @@ int main() {
     
     cout << nums[k - 1] << endl;
     return 0;
-}`,
+}`
+    },
 
-    "Noman's Tricky Trapping Rain Water": `#include <iostream>
+    "Noman's Tricky Trapping Rain Water": {
+        cpp: `#include <iostream>
 #include <vector>
 using namespace std;
 
@@ -351,9 +383,11 @@ int main() {
     
     cout << water << endl;
     return 0;
-}`,
+}`
+    },
 
-    "Pushpita's Largest Number Formation": `#include <iostream>
+    "Pushpita's Largest Number Formation": {
+        cpp: `#include <iostream>
 #include <vector>
 #include <string>
 #include <algorithm>
@@ -386,6 +420,161 @@ int main() {
     cout << endl;
     return 0;
 }`
+    },
+
+    "Noman's GCD Sum Challenge": {
+        cpp: `#include <bits/stdc++.h>
+using namespace std;
+
+long long phi(long long n) {
+    long long result = n;
+    for (long long i = 2; i * i <= n; i++) {
+        if (n % i == 0) {
+            while (n % i == 0) n /= i;
+            result -= result / i;
+        }
+    }
+    if (n > 1) result -= result / n;
+    return result;
+}
+
+vector<long long> get_divisors(long long n) {
+    vector<long long> divisors;
+    for (long long i = 1; i * i <= n; i++) {
+        if (n % i == 0) {
+            divisors.push_back(i);
+            if (i != n / i) divisors.push_back(n / i);
+        }
+    }
+    sort(divisors.begin(), divisors.end());
+    return divisors;
+}
+
+int main() {
+    long long n;
+    cin >> n;
+    
+    vector<long long> divisors = get_divisors(n);
+    long long sum = 0;
+    
+    for (long long d : divisors) {
+        sum += d * phi(n / d);
+    }
+    
+    cout << sum << endl;
+    return 0;
+}`,
+        java: `import java.util.*;
+
+public class Main {
+    static long phi(long n) {
+        long result = n;
+        for (long i = 2; i * i <= n; i++) {
+            if (n % i == 0) {
+                while (n % i == 0) n /= i;
+                result -= result / i;
+            }
+        }
+        if (n > 1) result -= result / n;
+        return result;
+    }
+
+    static List<Long> getDivisors(long n) {
+        List<Long> divisors = new ArrayList<>();
+        for (long i = 1; i * i <= n; i++) {
+            if (n % i == 0) {
+                divisors.add(i);
+                if (i != n / i) divisors.add(n / i);
+            }
+        }
+        Collections.sort(divisors);
+        return divisors;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        long n = sc.nextLong();
+        
+        List<Long> divisors = getDivisors(n);
+        long sum = 0;
+        
+        for (long d : divisors) {
+            sum += d * phi(n / d);
+        }
+        
+        System.out.println(sum);
+    }
+}`,
+        python: `def phi(n):
+    result = n
+    i = 2
+    while i * i <= n:
+        if n % i == 0:
+            while n % i == 0:
+                n //= i
+            result -= result // i
+        i += 1
+    if n > 1:
+        result -= result // n
+    return result
+
+def get_divisors(n):
+    divisors = []
+    i = 1
+    while i * i <= n:
+        if n % i == 0:
+            divisors.append(i)
+            if i != n // i:
+                divisors.append(n // i)
+        i += 1
+    divisors.sort()
+    return divisors
+
+n = int(input())
+divisors = get_divisors(n)
+total_sum = 0
+
+for d in divisors:
+    total_sum += d * phi(n // d)
+
+print(total_sum)`,
+        javascript: `const fs = require('fs');
+const input = fs.readFileSync(0, 'utf-8').trim();
+const n = parseInt(input);
+
+function phi(num) {
+    let result = num;
+    for (let i = 2; i * i <= num; i++) {
+        if (num % i === 0) {
+            while (num % i === 0) num /= i;
+            result -= Math.floor(result / i);
+        }
+    }
+    if (num > 1) result -= Math.floor(result / num);
+    return result;
+}
+
+function getDivisors(num) {
+    const divisors = [];
+    for (let i = 1; i * i <= num; i++) {
+        if (num % i === 0) {
+            divisors.push(i);
+            if (i !== Math.floor(num / i)) divisors.push(Math.floor(num / i));
+        }
+    }
+    divisors.sort((a, b) => a - b);
+    return divisors;
+}
+
+const divisors = getDivisors(n);
+let sum = 0;
+
+for (const d of divisors) {
+    sum += d * phi(Math.floor(n / d));
+}
+
+console.log(sum);`
+    }
 };
 
 module.exports = solutions;

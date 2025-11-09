@@ -60,6 +60,68 @@ const testcases = {
         { input: [[10, 2]], output: "210" },
         { input: [[3, 30, 34, 5, 9]], output: "9534330" },
         { input: [[50, 2, 1, 9]], output: "95021" }
+    ],
+
+    "Noman's GCD Sum Challenge": [
+        // Basic cases - small N
+        { input: [1], output: 1 },
+        { input: [2], output: 3 },
+        { input: [3], output: 5 },
+        { input: [4], output: 8 },
+        { input: [5], output: 9 },
+        { input: [6], output: 15 },
+        { input: [7], output: 13 },
+        { input: [8], output: 20 },
+        { input: [9], output: 21 },
+        { input: [10], output: 27 },
+        
+        // Edge cases - primes and special numbers
+        { input: [11], output: 21 },
+        { input: [13], output: 25 },
+        { input: [17], output: 33 },
+        { input: [19], output: 37 },
+        { input: [23], output: 45 },
+        { input: [29], output: 57 },
+        { input: [31], output: 61 },
+        
+        // Numbers with many divisors
+        { input: [12], output: 40 },
+        { input: [15], output: 45 },
+        { input: [16], output: 48 },
+        { input: [18], output: 63 },
+        { input: [20], output: 72 },
+        { input: [24], output: 100 },
+        { input: [25], output: 65 },
+        { input: [30], output: 135 },
+        { input: [36], output: 168 },
+        { input: [42], output: 195 },
+        
+        // Large cases
+        { input: [60], output: 360 },
+        { input: [72], output: 420 },
+        { input: [84], output: 520 },
+        { input: [96], output: 560 },
+        { input: [100], output: 520 },
+        { input: [120], output: 900 },
+        { input: [144], output: 1008 },
+        { input: [168], output: 1300 },
+        { input: [180], output: 1512 },
+        { input: [210], output: 1755 },
+        
+        // Very large cases for comprehensive testing
+        { input: [240], output: 2160 },
+        { input: [252], output: 2184 },
+        { input: [270], output: 2187 },
+        { input: [300], output: 2600 },
+        { input: [336], output: 3120 },
+        { input: [360], output: 3780 },
+        { input: [420], output: 4680 },
+        { input: [480], output: 5040 },
+        { input: [504], output: 5460 },
+        { input: [540], output: 5832 },
+        { input: [600], output: 6500 },
+        { input: [720], output: 9072 },
+        { input: [840], output: 11700 }
     ]
 };
 

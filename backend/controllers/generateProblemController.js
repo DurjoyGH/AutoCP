@@ -36,8 +36,23 @@ const generateNewProblem = async (req, res) => {
         difficulty = 'hard';
     }
 
-    const problemsByDifficulty = pregeneratedProblems[difficulty] || pregeneratedProblems['easy'];
-    const generatedProblemData = problemsByDifficulty[Math.floor(Math.random() * problemsByDifficulty.length)];
+    let generatedProblemData;
+
+    // Special case: If math topic and 1000 rating, always return Noman's GCD Sum Challenge
+    if (topics.includes('Math') && ratingValue === 1000) {
+        // Find the specific Noman's GCD Sum Challenge problem
+        const easyProblems = pregeneratedProblems['easy'] || [];
+        generatedProblemData = easyProblems.find(p => p.title === "Noman's GCD Sum Challenge");
+        
+        if (!generatedProblemData) {
+            // Fallback to random if not found
+            generatedProblemData = easyProblems[Math.floor(Math.random() * easyProblems.length)];
+        }
+    } else {
+        // Normal random selection
+        const problemsByDifficulty = pregeneratedProblems[difficulty] || pregeneratedProblems['easy'];
+        generatedProblemData = problemsByDifficulty[Math.floor(Math.random() * problemsByDifficulty.length)];
+    }
 
 
     // Save problem to database

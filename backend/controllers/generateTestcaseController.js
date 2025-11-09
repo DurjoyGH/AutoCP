@@ -39,11 +39,36 @@ const generateNewTestcases = async (req, res) => {
         });
     }
 
-    const formattedTestcases = testcaseData.map(tc => ({
-        type: 'basic', // Assuming all are basic for now
-        input: Array.isArray(tc.input) ? tc.input.join(', ') : tc.input,
-        output: tc.output.toString()
-    }));
+    // Categorize testcases based on the problem
+    const formattedTestcases = testcaseData.map((tc, index) => {
+        let type = 'basic';
+        
+        // Special categorization for Noman's GCD Sum Challenge
+        if (problem.title === "Noman's GCD Sum Challenge") {
+            if (index < 10) {
+                type = 'basic'; // First 10: basic small numbers
+            } else if (index < 30) {
+                type = 'edge'; // Next 20: edge cases (primes, special numbers)
+            } else {
+                type = 'large'; // Last 20: large test cases
+            }
+        } else {
+            // Default categorization for other problems
+            if (index === 0 || index === 1) {
+                type = 'basic';
+            } else if (index === testcaseData.length - 1) {
+                type = 'large';
+            } else {
+                type = 'edge';
+            }
+        }
+        
+        return {
+            type,
+            input: Array.isArray(tc.input) ? tc.input.join(', ') : tc.input,
+            output: tc.output.toString()
+        };
+    });
 
     // Save testcases to database
     const newTestcases = new Testcase({
