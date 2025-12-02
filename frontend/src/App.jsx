@@ -51,8 +51,12 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         
-        {/* Dashboard Routes - Now public */}
-        <Route path="/dashboard" element={<Dashboard />} />
+        {/* Dashboard Routes - Protected */}
+        <Route path="/dashboard" element={
+          <ProtectedRoute requiredRole="user">
+            <Dashboard />
+          </ProtectedRoute>
+        } />
         
         {/* 404 Route */}
         <Route path="*" element={<div className="p-8 text-white min-h-screen bg-[#01161e] flex items-center justify-center">404 - Page Not Found</div>} />

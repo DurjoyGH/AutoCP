@@ -69,8 +69,24 @@ Return ONLY the JSON object, no additional text or markdown formatting.
       cleanedText = cleanedText.replace(/```\n?/g, '');
     }
 
-    // Parse the JSON response
-    const problemData = JSON.parse(cleanedText);
+    // Remove any trailing commas before closing braces/brackets
+    cleanedText = cleanedText.replace(/,(\s*[}\]])/g, '$1');
+    
+    // Try to extract JSON if there's extra text
+    const jsonMatch = cleanedText.match(/\{[\s\S]*\}/);
+    if (jsonMatch) {
+      cleanedText = jsonMatch[0];
+    }
+
+    let problemData;
+    try {
+      // Parse the JSON response
+      problemData = JSON.parse(cleanedText);
+    } catch (parseError) {
+      console.error('JSON Parse Error:', parseError.message);
+      console.error('Problematic JSON:', cleanedText.substring(0, 500));
+      throw new Error(`Invalid JSON response from AI: ${parseError.message}`);
+    }
 
     // Validate required fields
     if (!problemData.title || !problemData.description) {

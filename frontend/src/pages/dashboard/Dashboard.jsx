@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import Sidebar from '../../components/Dashboard/Sidebar';
 import ProblemGenerator from '../../components/Dashboard/ProblemGenerator';
+import History from '../../components/Dashboard/History';
+import FavouriteProblems from '../../components/Dashboard/FavouriteProblems';
 import { showToast } from '../../components/Toast/CustomToast';
 
 const Dashboard = () => {
@@ -54,6 +56,8 @@ const Dashboard = () => {
             </button>
             <h1 className="text-2xl font-bold text-white">
               {activeSection === 'dashboard' && 'Dashboard'}
+              {activeSection === 'history' && 'History'}
+              {activeSection === 'favorites' && 'Saved Problems'}
               {activeSection === 'profile' && 'Profile'}
             </h1>
           </div>
@@ -80,6 +84,14 @@ const Dashboard = () => {
             {/* Placeholder for different sections */}
             {activeSection === 'dashboard' && (
               <ProblemGenerator />
+            )}
+
+            {activeSection === 'history' && (
+              <History />
+            )}
+
+            {activeSection === 'favorites' && (
+              <FavouriteProblems />
             )}
 
             {activeSection === 'profile' && (
