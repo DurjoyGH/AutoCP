@@ -29,8 +29,10 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 // --- Routes ---
 const generateProblemRoutes = require('./routes/generateProblemRoutes');
 const authRoutes = require('./routes/authRoutes');
+const generateSolutionRoutes = require('./routes/generateSolutionRoutes');
 
 app.use('/api/generate-problem', generateProblemRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/generate-solution', generateSolutionRoutes);
 
 module.exports = app;

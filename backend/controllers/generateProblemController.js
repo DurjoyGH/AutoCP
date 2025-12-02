@@ -1,5 +1,6 @@
 const Problem = require('../models/problem');
 const {  problemProvider} = require('../services/aiService');
+const yaml = require('js-yaml');
 
 // @desc    Generate a new problem using Gemini AI
 // @route   POST /api/generate-problem
@@ -10,17 +11,21 @@ const generateNewProblem = async (req, res) => {
 
     // Validation
     if (!topics || !Array.isArray(topics) || topics.length === 0) {
-      return res.status(400).json({
-        success: false,
-        message: 'Please provide at least one topic'
-      });
+      return res.status(400)
+        .set('Content-Type', 'application/x-yaml')
+        .send(yaml.dump({
+          success: false,
+          message: 'Please provide at least one topic'
+        }));
     }
 
     if (!rating) {
-      return res.status(400).json({
-        success: false,
-        message: 'Please provide a difficulty rating'
-      });
+      return res.status(400)
+        .set('Content-Type', 'application/x-yaml')
+        .send(yaml.dump({
+          success: false,
+          message: 'Please provide a difficulty rating'
+        }));
     }
 
     // Generate problem using Gemini AI
@@ -54,19 +59,23 @@ const generateNewProblem = async (req, res) => {
 
     await problem.save();
 
-    res.status(201).json({
-      success: true,
-      message: 'Problem generated successfully',
-      data: problem
-    });
+    res.status(201)
+      .set('Content-Type', 'application/x-yaml')
+      .send(yaml.dump({
+        success: true,
+        message: 'Problem generated successfully',
+        data: problem.toObject()
+      }));
 
   } catch (error) {
     console.error('Generate problem error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Failed to generate problem',
-      error: error.message
-    });
+    res.status(500)
+      .set('Content-Type', 'application/x-yaml')
+      .send(yaml.dump({
+        success: false,
+        message: 'Failed to generate problem',
+        error: error.message
+      }));
   }
 };
 
@@ -85,21 +94,25 @@ const getProblemHistory = async (req, res) => {
 
     const count = await Problem.countDocuments({ userId: req.user._id });
 
-    res.status(200).json({
-      success: true,
-      data: problems,
-      totalPages: Math.ceil(count / limit),
-      currentPage: page,
-      total: count
-    });
+    res.status(200)
+      .set('Content-Type', 'application/x-yaml')
+      .send(yaml.dump({
+        success: true,
+        data: problems.map(p => p.toObject()),
+        totalPages: Math.ceil(count / limit),
+        currentPage: parseInt(page),
+        total: count
+      }));
 
   } catch (error) {
     console.error('Get problem history error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Failed to fetch problem history',
-      error: error.message
-    });
+    res.status(500)
+      .set('Content-Type', 'application/x-yaml')
+      .send(yaml.dump({
+        success: false,
+        message: 'Failed to fetch problem history',
+        error: error.message
+      }));
   }
 };
 
@@ -124,21 +137,25 @@ const getFavoriteProblems = async (req, res) => {
       isFavorited: true 
     });
 
-    res.status(200).json({
-      success: true,
-      data: problems,
-      totalPages: Math.ceil(count / limit),
-      currentPage: page,
-      total: count
-    });
+    res.status(200)
+      .set('Content-Type', 'application/x-yaml')
+      .send(yaml.dump({
+        success: true,
+        data: problems.map(p => p.toObject()),
+        totalPages: Math.ceil(count / limit),
+        currentPage: parseInt(page),
+        total: count
+      }));
 
   } catch (error) {
     console.error('Get favorite problems error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Failed to fetch favorite problems',
-      error: error.message
-    });
+    res.status(500)
+      .set('Content-Type', 'application/x-yaml')
+      .send(yaml.dump({
+        success: false,
+        message: 'Failed to fetch favorite problems',
+        error: error.message
+      }));
   }
 };
 
@@ -153,28 +170,34 @@ const toggleFavorite = async (req, res) => {
     });
 
     if (!problem) {
-      return res.status(404).json({
-        success: false,
-        message: 'Problem not found'
-      });
+      return res.status(404)
+        .set('Content-Type', 'application/x-yaml')
+        .send(yaml.dump({
+          success: false,
+          message: 'Problem not found'
+        }));
     }
 
     problem.isFavorited = !problem.isFavorited;
     await problem.save();
 
-    res.status(200).json({
-      success: true,
-      message: problem.isFavorited ? 'Added to favorites' : 'Removed from favorites',
-      data: problem
-    });
+    res.status(200)
+      .set('Content-Type', 'application/x-yaml')
+      .send(yaml.dump({
+        success: true,
+        message: problem.isFavorited ? 'Added to favorites' : 'Removed from favorites',
+        data: problem.toObject()
+      }));
 
   } catch (error) {
     console.error('Toggle favorite error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Failed to update favorite status',
-      error: error.message
-    });
+    res.status(500)
+      .set('Content-Type', 'application/x-yaml')
+      .send(yaml.dump({
+        success: false,
+        message: 'Failed to update favorite status',
+        error: error.message
+      }));
   }
 };
 
@@ -189,24 +212,30 @@ const getProblemById = async (req, res) => {
     });
 
     if (!problem) {
-      return res.status(404).json({
-        success: false,
-        message: 'Problem not found'
-      });
+      return res.status(404)
+        .set('Content-Type', 'application/x-yaml')
+        .send(yaml.dump({
+          success: false,
+          message: 'Problem not found'
+        }));
     }
 
-    res.status(200).json({
-      success: true,
-      data: problem
-    });
+    res.status(200)
+      .set('Content-Type', 'application/x-yaml')
+      .send(yaml.dump({
+        success: true,
+        data: problem.toObject()
+      }));
 
   } catch (error) {
     console.error('Get problem by ID error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Failed to fetch problem',
-      error: error.message
-    });
+    res.status(500)
+      .set('Content-Type', 'application/x-yaml')
+      .send(yaml.dump({
+        success: false,
+        message: 'Failed to fetch problem',
+        error: error.message
+      }));
   }
 };
 
@@ -221,24 +250,30 @@ const deleteProblem = async (req, res) => {
     });
 
     if (!problem) {
-      return res.status(404).json({
-        success: false,
-        message: 'Problem not found'
-      });
+      return res.status(404)
+        .set('Content-Type', 'application/x-yaml')
+        .send(yaml.dump({
+          success: false,
+          message: 'Problem not found'
+        }));
     }
 
-    res.status(200).json({
-      success: true,
-      message: 'Problem deleted successfully'
-    });
+    res.status(200)
+      .set('Content-Type', 'application/x-yaml')
+      .send(yaml.dump({
+        success: true,
+        message: 'Problem deleted successfully'
+      }));
 
   } catch (error) {
     console.error('Delete problem error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Failed to delete problem',
-      error: error.message
-    });
+    res.status(500)
+      .set('Content-Type', 'application/x-yaml')
+      .send(yaml.dump({
+        success: false,
+        message: 'Failed to delete problem',
+        error: error.message
+      }));
   }
 };
 

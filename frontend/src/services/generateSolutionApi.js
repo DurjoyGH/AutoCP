@@ -1,4 +1,5 @@
 import axios from 'axios';
+import yaml from 'js-yaml';
 
 const API_URL = 'http://localhost:3000/api/generate-solution';
 
@@ -20,6 +21,54 @@ api.interceptors.request.use(
     return config;
   },
   (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// Add response interceptor to parse YAML responses
+api.interceptors.response.use(
+  (response) => {
+    // If response is YAML, parse it
+    const contentType = response.headers['content-type'] || '';
+    const isYaml = contentType.includes('yaml') || contentType.includes('x-yaml');
+    
+    if (isYaml && typeof response.data === 'string') {
+      try {
+        console.log('Parsing YAML response...');
+        response.data = yaml.load(response.data);
+        console.log('Successfully parsed YAML response');
+      } catch (e) {
+        console.error('Failed to parse YAML response:', e);
+        console.error('Raw response:', response.data.substring(0, 500));
+        // Return error object instead of throwing
+        response.data = {
+          success: false,
+          message: 'Failed to parse server response',
+          error: e.message
+        };
+      }
+    }
+    return response;
+  },
+  (error) => {
+    // Parse error response if it's YAML
+    if (error.response?.data && typeof error.response.data === 'string') {
+      const contentType = error.response.headers['content-type'] || '';
+      const isYaml = contentType.includes('yaml') || contentType.includes('x-yaml');
+      
+      if (isYaml) {
+        try {
+          error.response.data = yaml.load(error.response.data);
+        } catch (e) {
+          console.error('Failed to parse YAML error response:', e);
+          error.response.data = {
+            success: false,
+            message: 'Failed to parse error response',
+            error: e.message
+          };
+        }
+      }
+    }
     return Promise.reject(error);
   }
 );
