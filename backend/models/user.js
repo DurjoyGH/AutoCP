@@ -28,6 +28,28 @@ const userSchema = new mongoose.Schema({
     trim: true,
     default: ''
   },
+  socialLinks: {
+    linkedin: {
+      type: String,
+      trim: true,
+      default: ''
+    },
+    leetcode: {
+      type: String,
+      trim: true,
+      default: ''
+    },
+    codeforces: {
+      type: String,
+      trim: true,
+      default: ''
+    },
+    github: {
+      type: String,
+      trim: true,
+      default: ''
+    }
+  },
   registeredAt: {
     type: Date,
     default: Date.now

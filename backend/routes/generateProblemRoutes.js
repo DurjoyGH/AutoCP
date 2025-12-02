@@ -17,11 +17,13 @@ router.use(authMiddleware);
 // Generate new problem
 router.post('/', generateNewProblem);
 
-// Get problem history
+// Get problem history - must be before /:id
 router.get('/history', getProblemHistory);
 
-// Get favorite problems
+// Get favorite problems - must be before /:id
 router.get('/favorites', getFavoriteProblems);
+
+// Toggle favorite status - must be before /:id
 
 // Get validation status for a problem (MUST be before /:id route)
 router.get('/:id/validation', getValidationStatus);
@@ -34,5 +36,8 @@ router.get('/:id', getProblemById);
 
 // Delete problem
 router.delete('/:id', deleteProblem);
+
+// Get single problem by ID - must be last
+router.get('/:id', getProblemById);
 
 module.exports = router;
