@@ -20,7 +20,7 @@ const PricingPage = () => {
       highlight: 'Best for Beginners',
       features: [
         { text: '30 credits daily', included: true },
-        { text: '3 free test cases', included: true },
+        
         { text: '800 rating only', included: true },
         { text: 'Single topic selection', included: true },
       ],
@@ -45,7 +45,7 @@ const PricingPage = () => {
       popular: true,
       features: [
         { text: '450 credits per month', included: true },
-        { text: '5 free test cases', included: true },
+       
         { text: '800-1200 rating', included: true },
         { text: 'Multiple topic selection', included: true },
       ],
@@ -69,7 +69,7 @@ const PricingPage = () => {
       highlight: 'Maximum Power',
       features: [
         { text: '1500 credits per month', included: true },
-        { text: '8 free test cases', included: true },
+        
         { text: '800-1600 rating', included: true },
         { text: 'Multiple topic selection', included: true },
       ],

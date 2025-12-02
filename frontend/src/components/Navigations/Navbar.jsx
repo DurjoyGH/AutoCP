@@ -19,7 +19,7 @@ const Navbar = () => {
     { name: 'Home', path: '/', icon: Home, show: true, showText: true },
     { name: 'About', path: '/about', icon: Info, show: true, showText: true },
     { name: 'Contact', path: '/contact', icon: Mail, show: true, showText: true },
-    { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard, show: true, showText: true },
+    { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard, show: !!user, showText: true },
     { name: 'Pricing', path: '/pricing', icon: Crown, show: true, showText: false }
   ];
 

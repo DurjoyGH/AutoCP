@@ -15,6 +15,16 @@ const Sidebar = ({ activeSection, setActiveSection, isOpen, toggleSidebar }) => 
       icon: LayoutDashboard,
     },
     {
+      id: 'history',
+      label: 'History',
+      icon: History,
+    },
+    {
+      id: 'favorites',
+      label: 'Saved Problems',
+      icon: Heart,
+    },
+    {
       id: 'profile',
       label: 'Profile',
       icon: User,
