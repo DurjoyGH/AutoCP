@@ -1,35 +1,59 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import PublicLayout from './components/Layouts/PublicLayout';
+// import AdminLayout from './components/Layouts/AdminLayout';
+import ProtectedRoute from './components/ProtectedRoutes/ProtectedRoute';
+import ScrollToTop from './components/ScrollTop/ScrollTop';
+import Login from './pages/auth/Login';
+import Register from './pages/auth/Register';
+import HomePage from './pages/public/HomePage';
+import DevelopersPage from './pages/public/DevelopersPage';
+import Dashboard from './pages/dashboard/Dashboard';
+import CustomToast from './components/Toast/CustomToast';
+import { AuthProvider } from './contexts/AuthContext';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <AuthProvider>
+      <Router>
+        <ScrollToTop />
+        <CustomToast />
+        <Routes>
+        {/* Public Routes - Home page and contact accessible to everyone */}
+        <Route path="/" element={<PublicLayout />}>
+          <Route index element={<HomePage />} />
+          <Route path="developers" element={<DevelopersPage />} />
+        </Route>
+        
+        {/* User Routes - Protected for regular users */}
+        <Route path="/" element={
+          <ProtectedRoute requiredRole="user">
+            <PublicLayout />
+          </ProtectedRoute>
+        }>
+        </Route>
+        
+        {/* Admin Routes - Protected for admin users */}
+        {/* <Route path="/admin" element={
+          <ProtectedRoute requiredRole="admin">
+            <AdminLayout />
+          </ProtectedRoute>
+        }>
+        </Route> */}
+        
+        {/* Auth Routes (without layout) */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        
+        {/* Dashboard Routes - Now public */}
+        <Route path="/dashboard" element={<Dashboard />} />
+        
+        {/* 404 Route */}
+        <Route path="*" element={<div className="p-8 text-white min-h-screen bg-[#01161e] flex items-center justify-center">404 - Page Not Found</div>} />
+      </Routes>
+    </Router>
+    </AuthProvider>
+  );
 }
 
-export default App
+export default App;
