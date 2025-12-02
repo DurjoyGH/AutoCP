@@ -27,6 +27,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // --- Routes ---
+const generateProblemRoutes = require('./routes/generateProblemRoutes');
 
+app.use('/api/generate-problem', generateProblemRoutes);
 
 module.exports = app;

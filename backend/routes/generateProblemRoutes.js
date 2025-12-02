@@ -6,6 +6,6 @@ const {
 } = require('../controllers/generateProblemController');
 
 // Generate new problem
-router.post('/generate-problem', generateProblem);
+router.post('/', generateProblem);
 
 module.exports = router;
