@@ -452,7 +452,8 @@ const FavouriteProblems = () => {
             {problems.map((problem) => (
               <div
                 key={problem.id}
-                className="bg-[#00303d]/60 backdrop-blur-xl border border-blue-500/20 rounded-lg p-4 hover:border-blue-500/40 transition-all flex items-center justify-between gap-3"
+                className="bg-[#00303d]/60 backdrop-blur-xl border border-blue-500/20 rounded-lg p-4 hover:border-blue-500/40 transition-all flex items-center justify-between gap-3 cursor-pointer"
+                onClick={() => setSelectedProblem(problem)}
               >
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1 flex-wrap">
@@ -474,13 +475,7 @@ const FavouriteProblems = () => {
                   <h3 className="text-lg font-bold text-white truncate">{problem.title}</h3>
                   <p className="text-gray-500 text-xs mt-1">Saved: {problem.savedAt}</p>
                 </div>
-                <div className="flex gap-1 shrink-0">
-                  <button
-                    onClick={() => setSelectedProblem(problem)}
-                    className="px-2 py-1 rounded bg-blue-500/30 hover:bg-blue-500/40 border border-blue-400/60 text-blue-300 text-xs font-semibold transition-all whitespace-nowrap"
-                  >
-                    View
-                  </button>
+                <div className="flex gap-1 shrink-0" onClick={(e) => e.stopPropagation()}>
                   <button
                     onClick={() => handleDownloadPDF(problem)}
                     className="p-1 rounded border border-[#004052] text-gray-400 hover:border-green-400/50 hover:text-green-400 transition-all"

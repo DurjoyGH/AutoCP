@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Trash2, Copy, Clock, ChevronLeft, FileCode, ListChecks, Download } from 'lucide-react';
+import { Trash2, Copy, Clock, ChevronLeft, FileCode, ListChecks, Download, Heart } from 'lucide-react';
 import { showToast } from '../Toast/CustomToast';
-import { getProblemHistory, deleteProblem } from '../../services/generateProblemApi';
+import { getProblemHistory, deleteProblem, toggleFavorite } from '../../services/generateProblemApi';
 import { generateSolution as generateSolutionApi, getSolution } from '../../services/generateSolutionApi';
 import { generateTestcases as generateTestcasesApi, getTestcases } from '../../services/generateTestcaseApi';
 import SolutionModal from '../Solution/SolutionModal';
@@ -41,6 +41,7 @@ const History = () => {
           description: p.description,
           examples: p.examples,
           constraints: p.constraints,
+          isFavorite: p.isFavorited || false, // Map backend field to frontend
           generatedAt: new Date(p.generatedAt).toLocaleString()
         }));
         setProblems(formattedProblems);
@@ -73,6 +74,28 @@ const History = () => {
     }
     // Would need a bulk delete API endpoint for this
     showToast.error('Bulk delete not implemented yet');
+  };
+
+  const handleToggleFavorite = async (id, currentStatus) => {
+    try {
+      const response = await toggleFavorite(id);
+      if (response.success) {
+        // Update the problem's favorite status in the list
+        setProblems(problems.map(p => 
+          p.id === id ? { ...p, isFavorite: !currentStatus } : p
+        ));
+        
+        // Update selected problem if it's currently displayed
+        if (selectedProblem?.id === id) {
+          setSelectedProblem({ ...selectedProblem, isFavorite: !currentStatus });
+        }
+        
+        showToast.success(currentStatus ? 'Removed from favorites' : 'Added to favorites');
+      }
+    } catch (error) {
+      console.error('Error toggling favorite:', error);
+      showToast.error('Failed to update favorite status');
+    }
   };
 
   const handleCopy = (problem) => {
@@ -439,7 +462,8 @@ const History = () => {
             {problems.map((problem) => (
               <div
                 key={problem.id}
-                className="bg-[#00303d]/60 backdrop-blur-xl border border-blue-500/20 rounded-lg p-4 hover:border-blue-500/40 transition-all flex items-center justify-between gap-3"
+                className="bg-[#00303d]/60 backdrop-blur-xl border border-blue-500/20 rounded-lg p-4 hover:border-blue-500/40 transition-all flex items-center justify-between gap-3 cursor-pointer"
+                onClick={() => setSelectedProblem(problem)}
               >
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1 flex-wrap">
@@ -461,12 +485,17 @@ const History = () => {
                   <h3 className="text-lg font-bold text-white truncate">{problem.title}</h3>
                   <p className="text-gray-500 text-xs mt-1">Generated: {problem.generatedAt}</p>
                 </div>
-                <div className="flex gap-1 shrink-0">
+                <div className="flex gap-1 shrink-0" onClick={(e) => e.stopPropagation()}>
                   <button
-                    onClick={() => setSelectedProblem(problem)}
-                    className="px-2 py-1 rounded bg-blue-500/30 hover:bg-blue-500/40 border border-blue-400/60 text-blue-300 text-xs font-semibold transition-all whitespace-nowrap"
+                    onClick={() => handleToggleFavorite(problem.id, problem.isFavorite)}
+                    className={`p-1 rounded border transition-all ${
+                      problem.isFavorite 
+                        ? 'border-pink-400/50 text-pink-400 bg-pink-500/10' 
+                        : 'border-[#004052] text-gray-400 hover:border-pink-400/50 hover:text-pink-400'
+                    }`}
+                    title={problem.isFavorite ? 'Remove from favorites' : 'Add to favorites'}
                   >
-                    View
+                    <Heart size={16} fill={problem.isFavorite ? 'currentColor' : 'none'} />
                   </button>
                   <button
                     onClick={() => handleDownloadPDF(problem)}

@@ -27,7 +27,7 @@ const PricingPage = () => {
       limitations: {
         rating: '800 only',
         topics: 'Single selection',
-        testCases: '3 included',
+        // testCases: '3 included',
       },
       buttonText: 'Get Started Free',
       buttonAction: () => user ? navigate('/dashboard') : navigate('/register'),
@@ -45,14 +45,13 @@ const PricingPage = () => {
       popular: true,
       features: [
         { text: '450 credits per month', included: true },
-       
         { text: '800-1200 rating', included: true },
         { text: 'Multiple topic selection', included: true },
       ],
       limitations: {
         rating: '800-1200',
         topics: 'Multiple selection',
-        testCases: '5 included',
+        // testCases: '5 included',
       },
       buttonText: 'Upgrade to Basic',
       buttonAction: () => navigate('/register'),
@@ -76,7 +75,7 @@ const PricingPage = () => {
       limitations: {
         rating: '800-1600',
         topics: 'Multiple selection',
-        testCases: '8 included',
+        // testCases: '8 included',
       },
       buttonText: 'Upgrade to Pro',
       buttonAction: () => navigate('/register'),
@@ -179,10 +178,6 @@ const PricingPage = () => {
                             <span className="text-gray-400">Topic Selection:</span>
                             <span className="text-white font-semibold">{plan.limitations.topics}</span>
                           </div>
-                          <div className="flex justify-between">
-                            <span className="text-gray-400">Free Test Cases:</span>
-                            <span className="text-white font-semibold">{plan.limitations.testCases}</span>
-                          </div>
                         </div>
                       </div>
 
@@ -242,104 +237,170 @@ const PricingPage = () => {
           </div>
 
           <div className="grid lg:grid-cols-2 gap-8">
-            {/* Problem Generation Table */}
-            <div className="bg-[#00303d] border border-[#005066] rounded-2xl p-8">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center">
-                  <Bolt className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <h3 className="text-2xl font-bold text-white">Problem Generation</h3>
-                  <p className="text-sm text-gray-400">Cost per difficulty level</p>
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                {creditCosts.map((item, idx) => (
-                  <div 
-                    key={item.rating} 
-                    className="group flex items-center justify-between p-4 rounded-xl bg-[#002029] border border-[#005066] hover:border-cyan-500/50 transition-all cursor-default"
-                  >
-                    <div className="flex items-center gap-4">
-                      <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-[#00303d] border border-[#005066] group-hover:border-cyan-500/50 transition-colors">
-                        <span className="text-sm font-bold text-cyan-400">{item.rating}</span>
-                      </div>
-                      <div>
-                        <div className="text-white font-semibold">Rating {item.rating}</div>
-                        <div className="text-xs text-gray-400">{item.difficulty}</div>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">
-                        {item.cost}
-                      </div>
-                      <div className="text-xs text-gray-400">credits</div>
-                    </div>
+            {/* Problem Generation Table - Compact List Style */}
+            <div className="relative group bg-gradient-to-br from-[#00303d] to-[#002029] border border-[#005066] rounded-2xl p-8 hover:border-cyan-500/40 transition-all duration-500 overflow-hidden">
+              {/* Animated Background Gradient */}
+              <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              
+              {/* Glowing Orbs */}
+              <div className="absolute -top-20 -right-20 w-40 h-40 bg-cyan-500/20 rounded-full blur-3xl group-hover:bg-cyan-500/30 transition-all duration-700"></div>
+              <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-blue-500/20 rounded-full blur-3xl group-hover:bg-blue-500/30 transition-all duration-700"></div>
+              
+              <div className="relative z-10">
+                <div className="flex items-center gap-3 mb-8">
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center shadow-lg shadow-cyan-500/30 group-hover:shadow-cyan-500/50 group-hover:scale-110 transition-all duration-300">
+                    <Bolt className="w-7 h-7 text-white animate-pulse" />
                   </div>
-                ))}
+                  <div>
+                    <h3 className="text-2xl font-black text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-cyan-400 group-hover:to-blue-400 transition-all duration-300">
+                      Problem Generation
+                    </h3>
+                    <p className="text-sm text-gray-400">Cost per difficulty level</p>
+                  </div>
+                </div>
+
+                {/* Compact List with Alternating Style */}
+                <div className="space-y-1.5">
+                  {creditCosts.map((item, idx) => (
+                    <div 
+                      key={item.rating} 
+                      className={`group/item relative flex items-center justify-between px-4 py-3 rounded-lg transition-all duration-300 cursor-pointer ${
+                        idx % 2 === 0 
+                          ? 'bg-[#002029]/60 hover:bg-[#003040]/80' 
+                          : 'bg-[#001520]/60 hover:bg-[#002838]/80'
+                      } border border-transparent hover:border-cyan-500/40`}
+                      style={{ animationDelay: `${idx * 30}ms` }}
+                    >
+                      {/* Hover Indicator Line */}
+                      <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-cyan-500 to-blue-500 opacity-0 group-hover/item:opacity-100 rounded-l-lg transition-opacity duration-300"></div>
+                      
+                      <div className="relative z-10 flex items-center gap-3 flex-1">
+                        <div className="flex items-center justify-center min-w-[3rem] h-9 rounded-lg bg-gradient-to-br from-cyan-500/20 to-blue-500/20 border border-cyan-500/30 group-hover/item:border-cyan-400/60 group-hover/item:shadow-md group-hover/item:shadow-cyan-500/20 transition-all duration-300">
+                          <span className="text-sm font-black text-cyan-300 group-hover/item:text-cyan-200 transition-colors duration-300">{item.rating}</span>
+                        </div>
+                        <div className="flex-1">
+                          <div className="text-white font-semibold text-sm group-hover/item:text-cyan-300 transition-colors duration-300">{item.difficulty}</div>
+                        </div>
+                      </div>
+                      <div className="relative z-10 flex items-center gap-1.5">
+                        <div className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400 group-hover/item:scale-110 transition-transform duration-300">
+                          {item.cost}
+                        </div>
+                        <div className="text-xs text-gray-400 font-semibold">credits</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Summary Footer */}
+                <div className="mt-6 pt-4 border-t border-cyan-500/20">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-gray-400">Difficulty Range</span>
+                    <span className="text-cyan-300 font-bold">Beginner → Expert</span>
+                  </div>
+                </div>
               </div>
             </div>
 
-            {/* Additional Costs & Examples */}
-            <div className="space-y-8">
-              {/* Test Cases */}
-              <div className="bg-[#00303d] border border-[#005066] rounded-2xl p-8">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
-                    <Shield className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="text-2xl font-bold text-white">Test Cases</h3>
-                    <p className="text-sm text-gray-400">Additional cost per test case</p>
-                  </div>
-                </div>
-
-                <div className="bg-[#002029] border border-[#005066] rounded-xl p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div className="text-white font-semibold mb-1">Per Test Case</div>
-                      <div className="text-sm text-gray-400">Beyond included limit</div>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
-                        10
-                      </div>
-                      <div className="text-xs text-gray-400">credits</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Example Calculations */}
-              <div className="bg-gradient-to-br from-[#00303d] to-[#002029] border border-[#005066] rounded-2xl p-8">
-                <h4 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-                  <Rocket className="w-5 h-5 text-cyan-400" />
-                  Example Calculations
-                </h4>
+            {/* Example Calculations - Visual Cards with Icons */}
+            <div className="space-y-4">
+              <div className="relative group bg-gradient-to-br from-[#00303d] via-[#002029] to-[#00303d] border border-[#005066] rounded-2xl p-8 hover:border-purple-500/40 transition-all duration-500 overflow-hidden">
+                {/* Animated Background */}
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-pink-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 
-                <div className="space-y-4">
-                  <div className="bg-[#002029] border border-[#005066] rounded-xl p-4">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-sm text-gray-300">800 rating + 3 test cases</span>
-                      <span className="px-3 py-1 bg-cyan-500/20 border border-cyan-500/30 rounded-lg text-cyan-400 text-xs font-bold">FREE</span>
+                {/* Glowing Orbs */}
+                <div className="absolute -top-20 -left-20 w-40 h-40 bg-purple-500/20 rounded-full blur-3xl group-hover:bg-purple-500/30 transition-all duration-700"></div>
+                <div className="absolute -bottom-20 -right-20 w-40 h-40 bg-pink-500/20 rounded-full blur-3xl group-hover:bg-pink-500/30 transition-all duration-700"></div>
+                
+                <div className="relative z-10">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500 via-pink-500 to-blue-500 flex items-center justify-center shadow-lg shadow-purple-500/30 group-hover:shadow-purple-500/50 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
+                      <Rocket className="w-7 h-7 text-white group-hover:translate-y-[-2px] transition-transform duration-300" />
                     </div>
-                    <div className="text-2xl font-black text-cyan-400">20 credits</div>
+                    <div>
+                      <h4 className="text-2xl font-black text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-purple-400 group-hover:to-pink-400 transition-all duration-300">
+                        Quick Examples
+                      </h4>
+                      <p className="text-sm text-gray-400">See pricing in action</p>
+                    </div>
                   </div>
-
-                  <div className="bg-[#002029] border border-[#005066] rounded-xl p-4">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-sm text-gray-300">1200 rating + 5 test cases</span>
-                      <span className="px-3 py-1 bg-blue-500/20 border border-blue-500/30 rounded-lg text-blue-400 text-xs font-bold">BASIC</span>
+                  
+                  {/* Large Visual Cards */}
+                  <div className="space-y-3">
+                    {/* FREE Tier Example */}
+                    <div className="group/calc relative bg-gradient-to-r from-cyan-900/20 via-blue-900/20 to-cyan-900/20 backdrop-blur-sm border-2 border-cyan-500/30 hover:border-cyan-400/60 rounded-2xl p-6 transition-all duration-300 cursor-pointer overflow-hidden hover:shadow-xl hover:shadow-cyan-500/20 hover:-translate-y-1">
+                      {/* Animated Shine Effect */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover/calc:translate-x-full transition-transform duration-1000"></div>
+                      
+                      {/* Large Icon Badge */}
+                      <div className="absolute top-4 right-4 w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-500/30 to-blue-500/30 border border-cyan-400/40 flex items-center justify-center group-hover/calc:scale-110 group-hover/calc:rotate-12 transition-all duration-300">
+                        <Gift className="w-8 h-8 text-cyan-300" />
+                      </div>
+                      
+                      <div className="relative z-10 pr-20">
+                        <div className="inline-flex px-4 py-1.5 bg-gradient-to-r from-cyan-500/30 to-blue-500/30 border border-cyan-400/50 rounded-full mb-3">
+                          <span className="text-cyan-200 text-xs font-black tracking-wider">FREE TIER</span>
+                        </div>
+                        <div className="mb-2">
+                          <span className="text-white font-bold text-lg">Rating 800</span>
+                          <span className="text-gray-400 text-sm ml-2">• Beginner</span>
+                        </div>
+                        <div className="flex items-baseline gap-2">
+                          <div className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-blue-300">20</div>
+                          <div className="text-lg text-gray-300 font-bold">credits</div>
+                        </div>
+                      </div>
                     </div>
-                    <div className="text-2xl font-black text-blue-400">90 credits</div>
-                  </div>
 
-                  <div className="bg-[#002029] border border-[#005066] rounded-xl p-4">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-sm text-gray-300">1600 rating + 8 test cases</span>
-                      <span className="px-3 py-1 bg-purple-500/20 border border-purple-500/30 rounded-lg text-purple-400 text-xs font-bold">PRO</span>
+                    {/* BASIC Tier Example */}
+                    <div className="group/calc relative bg-gradient-to-r from-blue-900/20 via-purple-900/20 to-blue-900/20 backdrop-blur-sm border-2 border-blue-500/30 hover:border-blue-400/60 rounded-2xl p-6 transition-all duration-300 cursor-pointer overflow-hidden hover:shadow-xl hover:shadow-blue-500/20 hover:-translate-y-1">
+                      {/* Animated Shine Effect */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover/calc:translate-x-full transition-transform duration-1000"></div>
+                      
+                      {/* Large Icon Badge */}
+                      <div className="absolute top-4 right-4 w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500/30 to-purple-500/30 border border-blue-400/40 flex items-center justify-center group-hover/calc:scale-110 group-hover/calc:rotate-12 transition-all duration-300">
+                        <Bolt className="w-8 h-8 text-blue-300" />
+                      </div>
+                      
+                      <div className="relative z-10 pr-20">
+                        <div className="inline-flex px-4 py-1.5 bg-gradient-to-r from-blue-500/30 to-purple-500/30 border border-blue-400/50 rounded-full mb-3">
+                          <span className="text-blue-200 text-xs font-black tracking-wider">BASIC PLAN</span>
+                        </div>
+                        <div className="mb-2">
+                          <span className="text-white font-bold text-lg">Rating 1200</span>
+                          <span className="text-gray-400 text-sm ml-2">• Medium</span>
+                        </div>
+                        <div className="flex items-baseline gap-2">
+                          <div className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-purple-300">90</div>
+                          <div className="text-lg text-gray-300 font-bold">credits</div>
+                        </div>
+                      </div>
                     </div>
-                    <div className="text-2xl font-black text-purple-400">200 credits</div>
+
+                    {/* PRO Tier Example */}
+                    <div className="group/calc relative bg-gradient-to-r from-purple-900/20 via-pink-900/20 to-purple-900/20 backdrop-blur-sm border-2 border-purple-500/30 hover:border-purple-400/60 rounded-2xl p-6 transition-all duration-300 cursor-pointer overflow-hidden hover:shadow-xl hover:shadow-purple-500/20 hover:-translate-y-1">
+                      {/* Animated Shine Effect */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover/calc:translate-x-full transition-transform duration-1000"></div>
+                      
+                      {/* Large Icon Badge */}
+                      <div className="absolute top-4 right-4 w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500/30 to-pink-500/30 border border-purple-400/40 flex items-center justify-center group-hover/calc:scale-110 group-hover/calc:rotate-12 transition-all duration-300">
+                        <Gem className="w-8 h-8 text-purple-300" />
+                      </div>
+                      
+                      <div className="relative z-10 pr-20">
+                        <div className="inline-flex px-4 py-1.5 bg-gradient-to-r from-purple-500/30 to-pink-500/30 border border-purple-400/50 rounded-full mb-3">
+                          <span className="text-purple-200 text-xs font-black tracking-wider">PRO PLAN</span>
+                        </div>
+                        <div className="mb-2">
+                          <span className="text-white font-bold text-lg">Rating 1600</span>
+                          <span className="text-gray-400 text-sm ml-2">• Expert</span>
+                        </div>
+                        <div className="flex items-baseline gap-2">
+                          <div className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-300 to-pink-300">200</div>
+                          <div className="text-lg text-gray-300 font-bold">credits</div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
