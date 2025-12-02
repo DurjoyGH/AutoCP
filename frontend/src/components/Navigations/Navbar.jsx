@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Menu, X, Home, Info, Mail, LayoutDashboard, LogIn, LogOut } from 'lucide-react';
+import { Menu, X, Home, LayoutDashboard, DollarSign, LogIn, LogOut } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
 const Navbar = () => {
@@ -17,6 +17,7 @@ const Navbar = () => {
 
   const navLinks = [
     { name: 'Home', path: '/', icon: Home, show: true },
+    { name: 'Pricing', path: '/pricing', icon: DollarSign, show: true },
     { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard, show: true }
   ];
 

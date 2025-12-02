@@ -8,6 +8,7 @@ import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import HomePage from './pages/public/HomePage';
 import DevelopersPage from './pages/public/DevelopersPage';
+import PricingPage from './pages/public/PricingPage';
 import Dashboard from './pages/dashboard/Dashboard';
 import CustomToast from './components/Toast/CustomToast';
 import { AuthProvider } from './contexts/AuthContext';
@@ -23,6 +24,7 @@ function App() {
         <Route path="/" element={<PublicLayout />}>
           <Route index element={<HomePage />} />
           <Route path="developers" element={<DevelopersPage />} />
+          <Route path="pricing" element={<PricingPage />} />
         </Route>
         
         {/* User Routes - Protected for regular users */}
