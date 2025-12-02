@@ -1,7 +1,7 @@
 import axios from 'axios';
 import yaml from 'js-yaml';
 
-const API_URL = 'http://localhost:3000/api/generate-problem';
+const API_URL = `${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/api/generate-problem`;
 
 // Create axios instance with default config
 const api = axios.create({
