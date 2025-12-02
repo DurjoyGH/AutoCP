@@ -30,11 +30,10 @@ ${problemData.constraints.map((c, i) => `${i + 1}. ${c}`).join('\n')}
 Time Complexity: ${problemData.timeComplexity}
 Space Complexity: ${problemData.spaceComplexity}
 
-Examples:
+Examples (for understanding the problem only):
 ${problemData.examples.map((ex, i) => `Example ${i + 1}:
 Input: ${ex.input}
-Output: ${ex.output}
-Explanation: ${ex.explanation}`).join('\n\n')}
+Output: ${ex.output}`).join('\n\n')}
 
 TEST CASES TO VALIDATE:
 ${problemData.testCases.map((tc, i) => `Test Case ${i + 1}:
@@ -42,7 +41,8 @@ Input: ${tc.input}
 Output: ${tc.output}`).join('\n\n')}
 
 YOUR TASK:
-For EACH test case, check if the output is CORRECT for the given input based on the problem statement.
+For EACH test case, independently verify if the output is CORRECT for the given input based on the problem statement.
+Do NOT rely on the examples - analyze each test case on its own merit.
 Provide a brief explanation for each test case.
 
 CRITICAL: Return response in PURE YAML format (no markdown, no code blocks).

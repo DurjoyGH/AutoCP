@@ -515,10 +515,10 @@ const ProblemGenerator = () => {
                       const bulletContent = paragraph.replace(/^[•\-]\s*/, '').replace(/^\d+\.\s*/, '');
                       const formattedBullet = bulletContent.split(/(`[^`]+`|'[^']+'|\*\*[^*]+\*\*)/).map((part, i) => {
                         if ((part.startsWith('`') && part.endsWith('`')) || (part.startsWith("'") && part.endsWith("'"))) {
-                          return <strong key={i} className="text-white font-bold">{part.slice(1, -1)}</strong>;
+                          return <strong key={i} className="text-gray-100 font-semibold">{part.slice(1, -1)}</strong>;
                         }
                         if (part.startsWith('**') && part.endsWith('**')) {
-                          return <strong key={i} className="text-white font-bold">{part.slice(2, -2)}</strong>;
+                          return <strong key={i} className="text-gray-100 font-semibold">{part.slice(2, -2)}</strong>;
                         }
                         return part;
                       });
@@ -534,10 +534,10 @@ const ProblemGenerator = () => {
                     // Handle bold text with backticks `text`, single quotes 'text', or **text**
                     const formattedText = paragraph.split(/(`[^`]+`|'[^']+'|\*\*[^*]+\*\*)/).map((part, i) => {
                       if ((part.startsWith('`') && part.endsWith('`')) || (part.startsWith("'") && part.endsWith("'"))) {
-                        return <strong key={i} className="text-white font-bold">{part.slice(1, -1)}</strong>;
+                        return <strong key={i} className="text-gray-100 font-semibold">{part.slice(1, -1)}</strong>;
                       }
                       if (part.startsWith('**') && part.endsWith('**')) {
-                        return <strong key={i} className="text-white font-bold">{part.slice(2, -2)}</strong>;
+                        return <strong key={i} className="text-gray-100 font-semibold">{part.slice(2, -2)}</strong>;
                       }
                       return part;
                     });
@@ -597,10 +597,10 @@ const ProblemGenerator = () => {
                           <p className="text-gray-300 text-sm whitespace-pre-wrap break-words">
                             {example.explanation.split(/(`[^`]+`|'[^']+'|\*\*[^*]+\*\*)/).map((part, i) => {
                               if ((part.startsWith('`') && part.endsWith('`')) || (part.startsWith("'") && part.endsWith("'"))) {
-                                return <strong key={i} className="text-white font-bold">{part.slice(1, -1)}</strong>;
+                                return <strong key={i} className="text-gray-100 font-semibold">{part.slice(1, -1)}</strong>;
                               }
                               if (part.startsWith('**') && part.endsWith('**')) {
-                                return <strong key={i} className="text-white font-bold">{part.slice(2, -2)}</strong>;
+                                return <strong key={i} className="text-gray-100 font-semibold">{part.slice(2, -2)}</strong>;
                               }
                               return part;
                             })}
@@ -633,10 +633,10 @@ const ProblemGenerator = () => {
                   <div className="text-gray-300 leading-relaxed text-sm whitespace-pre-wrap break-words">
                     {generatedProblem.approach.split(/(`[^`]+`|'[^']+'|\*\*[^*]+\*\*)/).map((part, i) => {
                       if ((part.startsWith('`') && part.endsWith('`')) || (part.startsWith("'") && part.endsWith("'"))) {
-                        return <strong key={i} className="text-white font-bold">{part.slice(1, -1)}</strong>;
+                        return <strong key={i} className="text-gray-100 font-semibold">{part.slice(1, -1)}</strong>;
                       }
                       if (part.startsWith('**') && part.endsWith('**')) {
-                        return <strong key={i} className="text-white font-bold">{part.slice(2, -2)}</strong>;
+                        return <strong key={i} className="text-gray-100 font-semibold">{part.slice(2, -2)}</strong>;
                       }
                       return part;
                     })}
@@ -658,10 +658,10 @@ const ProblemGenerator = () => {
                         <span className="text-gray-300 text-sm flex-1 break-words">
                           {insight.split(/(`[^`]+`|'[^']+'|\*\*[^*]+\*\*)/).map((part, i) => {
                             if ((part.startsWith('`') && part.endsWith('`')) || (part.startsWith("'") && part.endsWith("'"))) {
-                              return <strong key={i} className="text-white font-bold">{part.slice(1, -1)}</strong>;
+                              return <strong key={i} className="text-gray-100 font-semibold">{part.slice(1, -1)}</strong>;
                             }
                             if (part.startsWith('**') && part.endsWith('**')) {
-                              return <strong key={i} className="text-white font-bold">{part.slice(2, -2)}</strong>;
+                              return <strong key={i} className="text-gray-100 font-semibold">{part.slice(2, -2)}</strong>;
                             }
                             return part;
                           })}
@@ -686,10 +686,10 @@ const ProblemGenerator = () => {
                         <p className="text-gray-300 text-sm break-words whitespace-pre-wrap">
                           {hint.split(/(`[^`]+`|'[^']+'|\*\*[^*]+\*\*)/).map((part, i) => {
                             if ((part.startsWith('`') && part.endsWith('`')) || (part.startsWith("'") && part.endsWith("'"))) {
-                              return <strong key={i} className="text-white font-bold">{part.slice(1, -1)}</strong>;
+                              return <strong key={i} className="text-gray-100 font-semibold">{part.slice(1, -1)}</strong>;
                             }
                             if (part.startsWith('**') && part.endsWith('**')) {
-                              return <strong key={i} className="text-white font-bold">{part.slice(2, -2)}</strong>;
+                              return <strong key={i} className="text-gray-100 font-semibold">{part.slice(2, -2)}</strong>;
                             }
                             return part;
                           })}
@@ -719,9 +719,16 @@ const ProblemGenerator = () => {
               </button>
               <button
                 onClick={handleViewValidation}
-                className="py-3 bg-gradient-to-r from-emerald-500/30 to-teal-500/30 hover:from-emerald-500/40 hover:to-teal-500/40 border-2 border-emerald-400/50 text-white font-semibold rounded-lg transition-all shadow-lg text-sm flex items-center justify-center gap-2 relative"
+                disabled={validationData?.validationStatus === 'running'}
+                className={`py-3 bg-gradient-to-r from-emerald-500/30 to-teal-500/30 hover:from-emerald-500/40 hover:to-teal-500/40 border-2 border-emerald-400/50 text-white font-semibold rounded-lg transition-all shadow-lg text-sm flex items-center justify-center gap-2 relative ${
+                  validationData?.validationStatus === 'running' ? 'opacity-75 cursor-wait' : ''
+                }`}
               >
-                <ShieldCheck size={16} />
+                {validationData?.validationStatus === 'running' ? (
+                  <Loader2 size={16} className="animate-spin" />
+                ) : (
+                  <ShieldCheck size={16} />
+                )}
                 Validation
                 {validationData?.validationStatus === 'running' && (
                   <span className="absolute -top-1 -right-1 w-3 h-3 bg-yellow-500 rounded-full animate-pulse"></span>
