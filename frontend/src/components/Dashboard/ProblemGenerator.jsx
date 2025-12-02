@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Sparkles, 
   Loader2, 
@@ -12,14 +12,16 @@ import {
   Download,
   Copy,
   FileCode,
-  ListChecks
+  ListChecks,
+  ShieldCheck
 } from 'lucide-react';
 import { showToast } from '../Toast/CustomToast';
-import { generateProblem, toggleFavorite as toggleFavoriteApi } from '../../services/generateProblemApi';
+import { generateProblem, toggleFavorite as toggleFavoriteApi, getValidationStatus } from '../../services/generateProblemApi';
 import { generateSolution as generateSolutionApi, getSolution } from '../../services/generateSolutionApi';
 import { generateTestcases as generateTestcasesApi, getTestcases } from '../../services/generateTestcaseApi';
 import SolutionModal from '../Solution/SolutionModal';
 import TestcaseModal from '../Testcase/TestcaseModal';
+import ValidationReport from '../Validation/ValidationReport';
 import { SkeletonProblemGenerator } from '../Loading/SkeletonLoader';
 import { generateProblemPDF } from '../../utils/pdfGenerator';
 
@@ -41,6 +43,9 @@ const ProblemGenerator = () => {
   const [testcaseModalOpen, setTestcaseModalOpen] = useState(false);
   const [testcases, setTestcases] = useState(null);
   const [testcaseLoading, setTestcaseLoading] = useState(false);
+  const [validationModalOpen, setValidationModalOpen] = useState(false);
+  const [validationData, setValidationData] = useState(null);
+  const [validationLoading, setValidationLoading] = useState(false);
 
   const topics = [
     { id: 'dp', name: 'Dynamic Programming', icon: Brain, color: 'purple' },
@@ -153,7 +158,10 @@ const ProblemGenerator = () => {
         setIsFavorited(problem.isFavorited);
         
         showToast.dismiss(toastId);
-        showToast.success('Problem generated successfully!');
+        showToast.success('Problem generated successfully! Test case validation in progress...');
+        
+        // Start polling for validation status
+        pollValidationStatus(problem._id);
       }
     } catch (error) {
       console.error('Error generating problem:', error);
@@ -164,6 +172,46 @@ const ProblemGenerator = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  // Poll validation status
+  const pollValidationStatus = async (problemId) => {
+    const maxAttempts = 60; // Poll for up to 5 minutes (60 * 5 seconds)
+    let attempts = 0;
+
+    const poll = async () => {
+      try {
+        const response = await getValidationStatus(problemId);
+        if (response.success) {
+          const status = response.data.validationStatus;
+          
+          if (status === 'completed' || status === 'failed') {
+            // Validation complete
+            setValidationData(response.data);
+            if (status === 'completed') {
+              showToast.success('Test case validation completed!');
+            } else {
+              showToast.warning('Test case validation failed');
+            }
+            return; // Stop polling
+          }
+          
+          // Still running, continue polling
+          attempts++;
+          if (attempts < maxAttempts) {
+            setTimeout(poll, 5000); // Poll every 5 seconds
+          }
+        }
+      } catch (error) {
+        console.error('Error polling validation status:', error);
+        attempts++;
+        if (attempts < maxAttempts) {
+          setTimeout(poll, 5000);
+        }
+      }
+    };
+
+    poll();
   };
 
   // Check for inconsistent selections
@@ -335,22 +383,50 @@ const ProblemGenerator = () => {
     }
   };
 
+  const handleViewValidation = async () => {
+    if (!generatedProblem?.id) {
+      showToast.error('Problem ID not found');
+      return;
+    }
+
+    try {
+      setValidationModalOpen(true);
+      setValidationLoading(true);
+
+      const response = await getValidationStatus(generatedProblem.id);
+      
+      if (response.success) {
+        setValidationData(response.data);
+      }
+    } catch (error) {
+      console.error('Error getting validation report:', error);
+      showToast.error(error.message || 'Failed to get validation report');
+      setValidationModalOpen(false);
+    } finally {
+      setValidationLoading(false);
+    }
+  };
+
   return (
     <div className="w-full min-h-screen bg-[#002029] overflow-hidden relative p-4">
-      {/* Solution Modal */}
+      {/* Modals */}
       <SolutionModal
         isOpen={solutionModalOpen}
         onClose={() => setSolutionModalOpen(false)}
         solution={solution}
         loading={solutionLoading}
       />
-
-      {/* Testcase Modal */}
       <TestcaseModal
         isOpen={testcaseModalOpen}
         onClose={() => setTestcaseModalOpen(false)}
         testcases={testcases}
         loading={testcaseLoading}
+      />
+      <ValidationReport
+        isOpen={validationModalOpen}
+        onClose={() => setValidationModalOpen(false)}
+        validationData={validationData}
+        loading={validationLoading}
       />
 
       {/* If problem is generated, show problem view */}
@@ -626,13 +702,13 @@ const ProblemGenerator = () => {
             </div>
 
             {/* Action Buttons */}
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-4 gap-3">
               <button
                 onClick={handleViewSolution}
                 className="py-3 bg-gradient-to-r from-purple-500/30 to-blue-500/30 hover:from-purple-500/40 hover:to-blue-500/40 border-2 border-purple-400/50 text-white font-semibold rounded-lg transition-all shadow-lg text-sm flex items-center justify-center gap-2"
               >
                 <FileCode size={16} />
-                View Solution
+                Solution
               </button>
               <button
                 onClick={handleViewTestcases}
@@ -642,11 +718,24 @@ const ProblemGenerator = () => {
                 Test Cases
               </button>
               <button
+                onClick={handleViewValidation}
+                className="py-3 bg-gradient-to-r from-emerald-500/30 to-teal-500/30 hover:from-emerald-500/40 hover:to-teal-500/40 border-2 border-emerald-400/50 text-white font-semibold rounded-lg transition-all shadow-lg text-sm flex items-center justify-center gap-2 relative"
+              >
+                <ShieldCheck size={16} />
+                Validation
+                {validationData?.validationStatus === 'running' && (
+                  <span className="absolute -top-1 -right-1 w-3 h-3 bg-yellow-500 rounded-full animate-pulse"></span>
+                )}
+                {validationData?.validationStatus === 'completed' && (
+                  <span className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full"></span>
+                )}
+              </button>
+              <button
                 onClick={generateAnother}
                 className="py-3 bg-[#004052] hover:bg-[#005066] text-white font-semibold rounded-lg transition-all shadow-lg text-sm flex items-center justify-center gap-2"
               >
                 <Sparkles size={16} />
-                New Challenge
+                New
               </button>
             </div>
           </div>

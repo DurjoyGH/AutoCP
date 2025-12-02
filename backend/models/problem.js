@@ -101,6 +101,41 @@ const problemSchema = new mongoose.Schema({
     default: false
   },
   
+  // Test Case Validation
+  testCases: [{
+    input: String,
+    output: String,
+    explanation: String
+  }],
+  
+  validationStatus: {
+    type: String,
+    enum: ['pending', 'running', 'completed', 'failed'],
+    default: 'pending'
+  },
+  
+  validationReport: {
+    isValid: {
+      type: Boolean,
+      default: false
+    },
+    overallScore: {
+      type: Number,
+      default: 0
+    },
+    summary: {
+      type: String,
+      default: ''
+    },
+    testCaseResults: [{
+      testCaseNumber: Number,
+      isValid: Boolean,
+      explanation: String,
+      issues: [String]
+    }],
+    validatedAt: Date
+  },
+  
   // Metadata
   generatedAt: {
     type: Date,

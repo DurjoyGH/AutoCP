@@ -7,7 +7,8 @@ const {
   getFavoriteProblems,
   toggleFavorite,
   getProblemById,
-  deleteProblem
+  deleteProblem,
+  getValidationStatus
 } = require('../controllers/generateProblemController');
 
 // All routes require authentication
@@ -22,11 +23,14 @@ router.get('/history', getProblemHistory);
 // Get favorite problems
 router.get('/favorites', getFavoriteProblems);
 
-// Get single problem by ID
-router.get('/:id', getProblemById);
+// Get validation status for a problem (MUST be before /:id route)
+router.get('/:id/validation', getValidationStatus);
 
 // Toggle favorite status
 router.put('/:id/favorite', toggleFavorite);
+
+// Get single problem by ID
+router.get('/:id', getProblemById);
 
 // Delete problem
 router.delete('/:id', deleteProblem);

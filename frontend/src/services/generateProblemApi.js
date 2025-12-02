@@ -35,8 +35,19 @@ api.interceptors.response.use(
     if (isYaml && typeof response.data === 'string') {
       try {
         console.log('Parsing YAML response...');
-        response.data = yaml.load(response.data);
+        // Use json: true to prevent circular references
+        response.data = yaml.load(response.data, { json: true });
         console.log('Successfully parsed YAML response');
+        
+        // Debug validation data
+        if (response.data?.data?.validationReport?.testCaseResults) {
+          console.log('Validation test case results detected');
+          console.log('Total results:', response.data.data.validationReport.testCaseResults.length);
+          console.log('All isValid values:');
+          response.data.data.validationReport.testCaseResults.forEach((tc, idx) => {
+            console.log(`  Test Case ${idx + 1}:`, tc.isValid, `(${typeof tc.isValid})`);
+          });
+        }
       } catch (e) {
         console.error('Failed to parse YAML response:', e);
         console.error('Raw response:', response.data.substring(0, 500));
@@ -58,7 +69,8 @@ api.interceptors.response.use(
       
       if (isYaml) {
         try {
-          error.response.data = yaml.load(error.response.data);
+          // Use json: true to prevent circular references
+          error.response.data = yaml.load(error.response.data, { json: true });
         } catch (e) {
           console.error('Failed to parse YAML error response:', e);
           error.response.data = {
@@ -137,11 +149,22 @@ export const deleteProblem = async (id) => {
   }
 };
 
+// Get validation status and report
+export const getValidationStatus = async (id) => {
+  try {
+    const response = await api.get(`/${id}/validation`);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || { message: 'Failed to fetch validation status' };
+  }
+};
+
 export default {
   generateProblem,
   getProblemHistory,
   getFavoriteProblems,
   getProblemById,
   toggleFavorite,
-  deleteProblem
+  deleteProblem,
+  getValidationStatus
 };
