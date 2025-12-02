@@ -21,6 +21,7 @@ import { generateTestcases as generateTestcasesApi, getTestcases } from '../../s
 import SolutionModal from '../Solution/SolutionModal';
 import TestcaseModal from '../Testcase/TestcaseModal';
 import { SkeletonProblemGenerator } from '../Loading/SkeletonLoader';
+import { generateProblemPDF } from '../../utils/pdfGenerator';
 
 const ProblemGenerator = () => {
   const [formData, setFormData] = useState({
@@ -231,6 +232,17 @@ const ProblemGenerator = () => {
     showToast.success('Copied to clipboard!');
   };
 
+  const handleDownloadPDF = () => {
+    if (!generatedProblem) return;
+    try {
+      generateProblemPDF(generatedProblem);
+      showToast.success('PDF downloaded successfully!');
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      showToast.error('Failed to generate PDF');
+    }
+  };
+
   const handleFavorite = async () => {
     if (!generatedProblem?.id) return;
 
@@ -379,6 +391,13 @@ const ProblemGenerator = () => {
                     }`}
                   >
                     <Heart size={18} fill={isFavorited ? 'currentColor' : 'none'} />
+                  </button>
+                  <button
+                    onClick={handleDownloadPDF}
+                    className="p-2 rounded-lg border-2 bg-[#00303d] border-[#004052] text-gray-400 hover:border-green-400/50 transition-all"
+                    title="Download PDF"
+                  >
+                    <Download size={18} />
                   </button>
                   <button
                     onClick={handleCopyCode}

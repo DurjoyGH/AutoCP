@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Trash2, Copy, Heart, ChevronLeft, FileCode, ListChecks } from 'lucide-react';
+import { Trash2, Copy, Heart, ChevronLeft, FileCode, ListChecks, Download } from 'lucide-react';
 import { showToast } from '../Toast/CustomToast';
 import { getFavoriteProblems, toggleFavorite, deleteProblem } from '../../services/generateProblemApi';
 import { generateSolution as generateSolutionApi, getSolution } from '../../services/generateSolutionApi';
@@ -7,6 +7,7 @@ import { generateTestcases as generateTestcasesApi, getTestcases } from '../../s
 import SolutionModal from '../Solution/SolutionModal';
 import TestcaseModal from '../Testcase/TestcaseModal';
 import { SkeletonHistoryItem } from '../Loading/SkeletonLoader';
+import { generateProblemPDF } from '../../utils/pdfGenerator';
 
 const FavouriteProblems = () => {
   const [problems, setProblems] = useState([]);
@@ -91,6 +92,16 @@ const FavouriteProblems = () => {
     const problemText = `${problem.title}\n\n${problem.description}\n\nTime: ${problem.timeComplexity}\nSpace: ${problem.spaceComplexity}`;
     navigator.clipboard.writeText(problemText);
     showToast('Problem copied to clipboard', 'success');
+  };
+
+  const handleDownloadPDF = (problem) => {
+    try {
+      generateProblemPDF(problem);
+      showToast.success('PDF downloaded successfully!');
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      showToast.error('Failed to generate PDF');
+    }
   };
 
   const handleViewSolution = async (problemId) => {
@@ -226,8 +237,15 @@ const FavouriteProblems = () => {
                 </h1>
               </div>
               <button
+                onClick={() => handleDownloadPDF(selectedProblem)}
+                className="p-3 hover:bg-green-500/20 rounded-lg transition-colors text-green-400 shrink-0"
+                title="Download PDF"
+              >
+                <Download size={24} />
+              </button>
+              <button
                 onClick={() => handleCopy(selectedProblem)}
-                className="p-3 hover:bg-blue-500/20 rounded-lg transition-colors text-blue-400 shrink-0 ml-16"
+                className="p-3 hover:bg-blue-500/20 rounded-lg transition-colors text-blue-400 shrink-0"
               >
                 <Copy size={24} />
               </button>
@@ -462,6 +480,13 @@ const FavouriteProblems = () => {
                     className="px-2 py-1 rounded bg-blue-500/30 hover:bg-blue-500/40 border border-blue-400/60 text-blue-300 text-xs font-semibold transition-all whitespace-nowrap"
                   >
                     View
+                  </button>
+                  <button
+                    onClick={() => handleDownloadPDF(problem)}
+                    className="p-1 rounded border border-[#004052] text-gray-400 hover:border-green-400/50 hover:text-green-400 transition-all"
+                    title="Download PDF"
+                  >
+                    <Download size={16} />
                   </button>
                   <button
                     onClick={() => handleCopy(problem)}
