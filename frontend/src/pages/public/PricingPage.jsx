@@ -97,62 +97,21 @@ const PricingPage = () => {
 
   return (
     <div className="min-h-screen bg-[#001a1f]">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#002029] via-[#00303d] to-[#004052] text-white py-24">
-        {/* Animated Background */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-20 left-1/4 w-96 h-96 bg-cyan-500 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
-          <div className="absolute top-40 right-1/4 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" style={{animationDelay: '1s'}}></div>
-          <div className="absolute bottom-20 left-1/2 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" style={{animationDelay: '2s'}}></div>
-        </div>
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center">
-            <div className="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full border border-white/20 mb-8">
-              <Star className="w-5 h-5 text-yellow-400 animate-pulse" />
-              <span className="text-sm font-semibold">Flexible Pricing for Everyone</span>
-            </div>
-            
-            <h1 className="text-5xl lg:text-7xl font-black mb-6 leading-tight">
+      {/* Pricing Cards Section */}
+      <section className="py-20 bg-[#001520]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h1 className="text-5xl lg:text-6xl font-black text-white mb-4">
               Choose Your
               <span className="block mt-2 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400">
                 Perfect Plan
               </span>
             </h1>
-            
-            <p className="text-xl lg:text-2xl text-gray-300 max-w-3xl mx-auto mb-8">
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
               Start free and scale as you grow. No hidden fees, cancel anytime.
             </p>
-
-            {/* Quick Stats */}
-            <div className="grid grid-cols-3 gap-6 max-w-2xl mx-auto mt-12">
-              <div className="text-center">
-                <div className="text-3xl lg:text-4xl font-black text-cyan-400 mb-1">30+</div>
-                <div className="text-sm text-gray-400">Daily Credits</div>
-              </div>
-              <div className="text-center border-x border-white/20">
-                <div className="text-3xl lg:text-4xl font-black text-purple-400 mb-1">1600</div>
-                <div className="text-sm text-gray-400">Max Rating</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl lg:text-4xl font-black text-blue-400 mb-1">৳500</div>
-                <div className="text-sm text-gray-400">From</div>
-              </div>
-            </div>
           </div>
-        </div>
 
-        {/* Wave Divider */}
-        <div className="absolute bottom-0 left-0 right-0">
-          <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
-            <path d="M0 0L60 10C120 20 240 40 360 46.7C480 53 600 47 720 43.3C840 40 960 40 1080 46.7C1200 53 1320 67 1380 73.3L1440 80V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0V0Z" fill="#001520" fillOpacity="1"/>
-          </svg>
-        </div>
-      </section>
-
-      {/* Pricing Cards Section */}
-      <section className="py-20 bg-[#001520] -mt-1">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-3 gap-8">
             {pricingPlans.map((plan, index) => {
               const Icon = plan.icon;
@@ -160,7 +119,7 @@ const PricingPage = () => {
               return (
                 <div
                   key={plan.name}
-                  className={`relative group ${plan.popular ? 'lg:-mt-8' : ''}`}
+                  className="relative group"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
                   {/* Popular Badge */}

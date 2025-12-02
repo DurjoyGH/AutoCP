@@ -1,5 +1,5 @@
 import React from 'react';
-import { LayoutDashboard, History, Heart, User, LogOut, X, ChevronLeft, Laptop2Icon , Home } from 'lucide-react';
+import { LayoutDashboard, History, Heart, User, LogOut, X, ChevronLeft, Laptop2Icon , Home, Crown } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { showToast } from '../../components/Toast/CustomToast';
@@ -124,6 +124,21 @@ const Sidebar = ({ activeSection, setActiveSection, isOpen, toggleSidebar }) => 
             );
           })}
         </nav>
+
+        {/* Upgrade to Pro Button */}
+        <div className={`px-3 py-3 ${!isOpen && 'hidden md:flex md:justify-center md:px-2'}`}>
+          <button
+            onClick={() => {
+              navigate('/pricing');
+              showToast.success('Check out our pricing plans!');
+            }}
+            className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border-2 border-yellow-500/50 text-yellow-300 hover:border-yellow-400 hover:from-yellow-500/30 hover:to-orange-500/30 transition-all duration-200 group ${!isOpen && 'md:justify-center md:px-2'}`}
+            title={!isOpen ? 'Upgrade to Pro' : ''}
+          >
+            <Crown size={20} className="group-hover:scale-110 transition-transform" />
+            {isOpen && <span className="font-semibold">Upgrade to Pro</span>}
+          </button>
+        </div>
 
         {/* Logout Button */}
         <div className={`px-3 py-4 border-t border-[#005066] ${!isOpen && 'hidden md:block'}`}>

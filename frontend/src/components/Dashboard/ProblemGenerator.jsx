@@ -65,12 +65,14 @@ const ProblemGenerator = () => {
 
   const ratings = [
     { value: '800', label: '800', difficulty: 'Beginner', color: 'green' },
+    { value: '900', label: '900', difficulty: 'Beginner', color: 'green' },
     { value: '1000', label: '1000', difficulty: 'Easy', color: 'green' },
+    { value: '1100', label: '1100', difficulty: 'Easy', color: 'green' },
     { value: '1200', label: '1200', difficulty: 'Medium', color: 'yellow' },
+    { value: '1300', label: '1300', difficulty: 'Medium', color: 'yellow' },
     { value: '1400', label: '1400', difficulty: 'Medium', color: 'yellow' },
-    { value: '1600', label: '1600', difficulty: 'Hard', color: 'orange' },
-    { value: '1800', label: '1800', difficulty: 'Hard', color: 'red' },
-    { value: '2000', label: '2000+', difficulty: 'Expert', color: 'purple' }
+    { value: '1500', label: '1500', difficulty: 'Hard', color: 'orange' },
+    { value: '1600', label: '1600', difficulty: 'Hard', color: 'orange' }
   ];
 
   const handleInputChange = (e) => {

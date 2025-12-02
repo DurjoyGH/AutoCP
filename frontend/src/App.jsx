@@ -7,6 +7,8 @@ import ScrollToTop from './components/ScrollTop/ScrollTop';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import HomePage from './pages/public/HomePage';
+import AboutPage from './pages/public/AboutPage';
+import ContactPage from './pages/public/ContactPage';
 import DevelopersPage from './pages/public/DevelopersPage';
 import PricingPage from './pages/public/PricingPage';
 import Dashboard from './pages/dashboard/Dashboard';
@@ -23,6 +25,8 @@ function App() {
         {/* Public Routes - Home page and contact accessible to everyone */}
         <Route path="/" element={<PublicLayout />}>
           <Route index element={<HomePage />} />
+          <Route path="about" element={<AboutPage />} />
+          <Route path="contact" element={<ContactPage />} />
           <Route path="developers" element={<DevelopersPage />} />
           <Route path="pricing" element={<PricingPage />} />
         </Route>
