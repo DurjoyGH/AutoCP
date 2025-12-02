@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Menu, X, Home, LayoutDashboard, DollarSign, LogIn, LogOut } from 'lucide-react';
+import { Menu, X, Home, LayoutDashboard, Crown, LogIn, LogOut, Info, Mail } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
 const Navbar = () => {
@@ -16,9 +16,11 @@ const Navbar = () => {
   };
 
   const navLinks = [
-    { name: 'Home', path: '/', icon: Home, show: true },
-    { name: 'Pricing', path: '/pricing', icon: DollarSign, show: true },
-    { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard, show: true }
+    { name: 'Home', path: '/', icon: Home, show: true, showText: true },
+    { name: 'About', path: '/about', icon: Info, show: true, showText: true },
+    { name: 'Contact', path: '/contact', icon: Mail, show: true, showText: true },
+    { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard, show: true, showText: true },
+    { name: 'Pricing', path: '/pricing', icon: Crown, show: true, showText: false }
   ];
 
   return (
@@ -45,14 +47,18 @@ const Navbar = () => {
                 <Link
                   key={link.name}
                   to={link.path}
-                  className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-white transition-all duration-200 ${
-                    location.pathname === link.path 
-                      ? 'bg-[#00303d]' 
-                      : 'hover:bg-[#00303d]'
+                  className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200 ${
+                    link.path === '/pricing' 
+                      ? 'text-yellow-400 hover:text-yellow-300 hover:bg-yellow-400/10' 
+                      : `text-white ${
+                          location.pathname === link.path 
+                            ? 'bg-[#00303d]' 
+                            : 'hover:bg-[#00303d]'
+                        }`
                   }`}
                 >
-                  <link.icon size={18} />
-                  <span className="font-medium">{link.name}</span>
+                  <link.icon size={link.path === '/pricing' ? 22 : 18} />
+                  {link.showText && <span className="font-medium">{link.name}</span>}
                 </Link>
               )
             ))}
@@ -97,14 +103,18 @@ const Navbar = () => {
                   key={link.name}
                   to={link.path}
                   onClick={() => setIsOpen(false)}
-                  className={`flex items-center space-x-3 px-4 py-3 rounded-lg text-white transition-all duration-200 ${
-                    location.pathname === link.path 
-                      ? 'bg-[#004052]' 
-                      : 'hover:bg-[#004052]'
+                  className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+                    link.path === '/pricing'
+                      ? 'text-yellow-400 hover:text-yellow-300 hover:bg-yellow-400/10'
+                      : `text-white ${
+                          location.pathname === link.path 
+                            ? 'bg-[#004052]' 
+                            : 'hover:bg-[#004052]'
+                        }`
                   }`}
                 >
-                  <link.icon size={20} />
-                  <span className="font-medium">{link.name}</span>
+                  <link.icon size={link.path === '/pricing' ? 24 : 20} />
+                  {link.showText && <span className="font-medium">{link.name}</span>}
                 </Link>
               )
             ))}

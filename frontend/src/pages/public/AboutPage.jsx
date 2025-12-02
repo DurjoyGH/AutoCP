@@ -1,4 +1,9 @@
 import { useNavigate } from 'react-router-dom';
+import { 
+  ArrowRight, Zap, Brain, Users, TrendingUp, Code2, 
+  Cpu, Target, Trophy, Rocket, CheckCircle, 
+  Sparkles, Award, Lightbulb, CircuitBoard, Binary
+} from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
 const AboutPage = () => {
@@ -14,22 +19,9 @@ const AboutPage = () => {
   };
 
   return (
-    <div className="bg-[#001a1f] min-h-screen flex items-center justify-center">
-      <div className="text-center text-white p-8">
-        <h1 className="text-4xl font-bold mb-4">About Page</h1>
-        <p className="text-gray-400 mb-6">Content coming soon...</p>
-        <button
-          onClick={() => navigate('/')}
-          className="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold transition-colors"
-        >
-          Back to Home
-        </button>
-      </div>
-    </div>
-  );
-};
-
-export default AboutPage;
+    <div className="bg-[#001a1f]">
+      {/* Hero Section - Asymmetric Design */}
+      <section className="relative overflow-hidden bg-linear-to-r from-[#002029] via-[#00303d] to-[#004052] text-white">
         {/* Animated Background Elements */}
         <div className="absolute inset-0 opacity-5">
           <div className="absolute top-0 left-1/4 w-64 h-64 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
