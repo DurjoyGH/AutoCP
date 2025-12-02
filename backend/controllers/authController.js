@@ -254,6 +254,7 @@ exports.login = async (req, res) => {
           email: user.email,
           role: user.role,
           organization: user.organization,
+          socialLinks: user.socialLinks,
           isVerified: user.isVerified,
           lastLogin: user.lastLogin
         }
@@ -289,6 +290,86 @@ exports.getCurrentUser = async (req, res) => {
     res.status(500).json({
       success: false,
       message: error.message || 'Failed to get user'
+    });
+  }
+};
+
+// Update User Profile
+exports.updateProfile = async (req, res) => {
+  try {
+    const { name, organization, socialLinks } = req.body;
+    const userId = req.user.id;
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found'
+      });
+    }
+
+    // Update fields
+    if (name) user.name = name;
+    if (organization !== undefined) user.organization = organization;
+    if (socialLinks) {
+      user.socialLinks = {
+        linkedin: socialLinks.linkedin || '',
+        leetcode: socialLinks.leetcode || '',
+        codeforces: socialLinks.codeforces || '',
+        github: socialLinks.github || ''
+      };
+    }
+
+    await user.save();
+
+    const updatedUser = await User.findById(userId).select('-password -verificationCode -verificationCodeExpires');
+
+    res.status(200).json({
+      success: true,
+      message: 'Profile updated successfully',
+      data: { user: updatedUser }
+    });
+  } catch (error) {
+    console.error('Update profile error:', error);
+    res.status(500).json({
+      success: false,
+      message: error.message || 'Failed to update profile'
+    });
+  }
+};
+
+// Get User Stats
+exports.getUserStats = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const Problem = require('../models/problem');
+
+    console.log('Fetching stats for user:', userId);
+
+    const favoriteCount = await Problem.countDocuments({
+      userId: userId,
+      isFavorited: true
+    });
+
+    const totalProblemsGenerated = await Problem.countDocuments({
+      userId: userId
+    });
+
+    console.log('Stats:', { favoriteCount, totalProblemsGenerated });
+
+    res.status(200).json({
+      success: true,
+      data: {
+        favoriteCount,
+        totalProblemsGenerated
+      }
+    });
+  } catch (error) {
+    console.error('Get user stats error:', error);
+    res.status(500).json({
+      success: false,
+      message: error.message || 'Failed to get user stats'
     });
   }
 };

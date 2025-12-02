@@ -6,6 +6,7 @@ import Sidebar from '../../components/Dashboard/Sidebar';
 import ProblemGenerator from '../../components/Dashboard/ProblemGenerator';
 import History from '../../components/Dashboard/History';
 import FavouriteProblems from '../../components/Dashboard/FavouriteProblems';
+import Profile from '../../components/Dashboard/Profile';
 import { showToast } from '../../components/Toast/CustomToast';
 
 const Dashboard = () => {
@@ -95,12 +96,7 @@ const Dashboard = () => {
             )}
 
             {activeSection === 'profile' && (
-              <div className="text-white">
-                <div className="bg-[#00607a] rounded-2xl shadow-2xl p-8">
-                  <h2 className="text-3xl font-bold mb-4">Profile</h2>
-                  <p className="text-gray-300">Profile content will go here</p>
-                </div>
-              </div>
+              <Profile />
             )}
           </div>
         </div>

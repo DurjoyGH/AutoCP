@@ -130,9 +130,13 @@ export const toggleFavorite = async (id) => {
 // Delete problem
 export const deleteProblem = async (id) => {
   try {
-    const response = await api.delete(`/${id}`);
+    // Ensure id is a string
+    const problemId = typeof id === 'object' ? id.toString() : String(id);
+    console.log('Deleting problem with ID:', problemId);
+    const response = await api.delete(`/${problemId}`);
     return response.data;
   } catch (error) {
+    console.error('Delete problem API error:', error);
     throw error.response?.data || { message: 'Failed to delete problem' };
   }
 };
