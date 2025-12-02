@@ -17,11 +17,11 @@ const exampleSchema = new mongoose.Schema({
 
 const problemSchema = new mongoose.Schema({
   // User who generated this problem
-//   userId: {
-//     type: mongoose.Schema.Types.ObjectId,
-//     ref: 'User',
-//     required: true
-//   },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
   
   // Problem metadata
   title: {
@@ -54,10 +54,9 @@ const problemSchema = new mongoose.Schema({
   // Generated problem content
   examples: [exampleSchema],
   
-  constraints: {
-    type: String,
-    required: true
-  },
+  constraints: [{
+    type: String
+  }],
   
   hints: [{
     type: String
