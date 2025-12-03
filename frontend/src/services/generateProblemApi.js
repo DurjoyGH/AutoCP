@@ -1,11 +1,15 @@
 import axios from 'axios';
 import yaml from 'js-yaml';
 
-const API_URL = `${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/api/generate-problem`;
+// Remove trailing slash from API URL to prevent double slashes
+const getApiUrl = () => {
+  const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+  return baseUrl.replace(/\/+$/, ''); // Remove trailing slashes
+};
 
-// Create axios instance with default config
+// Create axios instance with default config for YAML responses
 const api = axios.create({
-  baseURL: API_URL,
+  baseURL: `${getApiUrl()}/api/generate-problem`,
   headers: {
     'Content-Type': 'application/json'
   }

@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, Eye, EyeOff, User, Building, CheckCircle, Loader2 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { showToast } from '../../components/Toast/CustomToast';
+import logo from '../../assets/logo.png';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -138,7 +139,7 @@ const Register = () => {
         <div className="hidden lg:flex flex-col justify-center space-y-6">
           <div className="flex items-center space-x-4">
             <img 
-              src="/src/assets/logo.png" 
+              src={logo} 
               alt="AutoCP Logo" 
               className="h-16 w-16 object-contain"
               onError={(e) => {
@@ -188,7 +189,7 @@ const Register = () => {
           <div className="lg:hidden text-center mb-6">
             <div className="flex justify-center items-center space-x-3 mb-3">
               <img 
-                src="/src/assets/logo.png" 
+                src={logo} 
                 alt="AutoCP Logo" 
                 className="h-12 w-12 object-contain"
                 onError={(e) => {

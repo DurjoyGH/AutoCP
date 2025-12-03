@@ -1,5 +1,6 @@
 import React from 'react';
 import { Loader2, Sparkles } from 'lucide-react';
+import logo from '../../assets/logo.png';
 
 // Simple centered loading spinner
 export const LoadingSpinner = ({ message = 'Loading...' }) => (
@@ -19,7 +20,7 @@ export const LoadingScreen = ({ message = 'Loading your workspace...' }) => (
       <div className="relative mb-8">
         <div className="w-20 h-20 mx-auto bg-[#00303d] border-2 border-blue-500/30 rounded-2xl flex items-center justify-center shadow-2xl shadow-blue-500/20 animate-pulse">
           <img 
-            src="/src/assets/logo.png" 
+            src={logo} 
             alt="AutoCP Logo" 
             className="h-12 w-12 object-contain"
             onError={(e) => {

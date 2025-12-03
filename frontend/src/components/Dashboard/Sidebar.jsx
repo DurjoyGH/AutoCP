@@ -3,6 +3,7 @@ import { LayoutDashboard, History, Heart, User, LogOut, X, ChevronLeft, Laptop2I
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { showToast } from '../../components/Toast/CustomToast';
+import logo from '../../assets/logo.png';
 
 const Sidebar = ({ activeSection, setActiveSection, isOpen, toggleSidebar }) => {
   const navigate = useNavigate();
@@ -73,7 +74,7 @@ const Sidebar = ({ activeSection, setActiveSection, isOpen, toggleSidebar }) => 
               onClick={!isOpen ? toggleSidebar : undefined}
             >
               <img 
-                src="/src/assets/logo.png" 
+                src={logo} 
                 alt="AutoCP Logo" 
                 className="h-10 w-10 object-contain"
                 onError={(e) => {

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Menu, X, Home, LayoutDashboard, Crown, LogIn, LogOut, Info, Mail } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
+import logo from '../../assets/logo.png';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -30,7 +31,7 @@ const Navbar = () => {
           {/* Logo and Title */}
           <Link to="/" className="flex items-center space-x-3 flex-shrink-0">
             <img 
-              src="/src/assets/logo.png" 
+              src={logo} 
               alt="AutoCP Logo" 
               className="h-10 w-10 object-contain"
               onError={(e) => {

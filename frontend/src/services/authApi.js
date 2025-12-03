@@ -1,15 +1,13 @@
-import axios from 'axios';
-
-const API_URL = `${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/api/auth`;
+import api from './api';
 
 const authApi = {
   register: async (userData) => {
-    const response = await axios.post(`${API_URL}/register`, userData);
+    const response = await api.post('/api/auth/register', userData);
     return response.data;
   },
 
   verifyEmail: async (email, code) => {
-    const response = await axios.post(`${API_URL}/verify-email`, { email, code });
+    const response = await api.post('/api/auth/verify-email', { email, code });
     if (response.data.success && response.data.data.token) {
       localStorage.setItem('token', response.data.data.token);
       localStorage.setItem('user', JSON.stringify(response.data.data.user));
@@ -18,12 +16,12 @@ const authApi = {
   },
 
   resendVerification: async (email) => {
-    const response = await axios.post(`${API_URL}/resend-verification`, { email });
+    const response = await api.post('/api/auth/resend-verification', { email });
     return response.data;
   },
 
   login: async (email, password) => {
-    const response = await axios.post(`${API_URL}/login`, { email, password });
+    const response = await api.post('/api/auth/login', { email, password });
     if (response.data.success && response.data.data.token) {
       localStorage.setItem('token', response.data.data.token);
       localStorage.setItem('user', JSON.stringify(response.data.data.user));
@@ -40,9 +38,7 @@ const authApi = {
     const token = localStorage.getItem('token');
     if (!token) return null;
 
-    const response = await axios.get(`${API_URL}/me`, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
+    const response = await api.get('/api/auth/me');
     return response.data;
   },
 

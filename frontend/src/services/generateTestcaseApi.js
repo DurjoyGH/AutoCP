@@ -1,25 +1,9 @@
-import axios from 'axios';
-
-const API_URL = `${import.meta.env.VITE_API_URL || 'http://localhost:3000'}/api/generate-testcase`;
-
-// Get auth token from localStorage
-const getAuthToken = () => {
-  return localStorage.getItem('token');
-};
+import api from './api';
 
 // Generate testcases for a problem
 export const generateTestcases = async (problemId) => {
   try {
-    const token = getAuthToken();
-    const response = await axios.post(
-      `${API_URL}/generate/${problemId}`,
-      {},
-      {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      }
-    );
+    const response = await api.post(`/api/generate-testcase/generate/${problemId}`, {});
     return response.data;
   } catch (error) {
     throw error.response?.data || error.message;
@@ -29,15 +13,7 @@ export const generateTestcases = async (problemId) => {
 // Get testcases for a problem
 export const getTestcases = async (problemId) => {
   try {
-    const token = getAuthToken();
-    const response = await axios.get(
-      `${API_URL}/${problemId}`,
-      {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      }
-    );
+    const response = await api.get(`/api/generate-testcase/${problemId}`);
     return response.data;
   } catch (error) {
     throw error.response?.data || error.message;
@@ -47,15 +23,7 @@ export const getTestcases = async (problemId) => {
 // Delete testcases for a problem
 export const deleteTestcases = async (problemId) => {
   try {
-    const token = getAuthToken();
-    const response = await axios.delete(
-      `${API_URL}/${problemId}`,
-      {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      }
-    );
+    const response = await api.delete(`/api/generate-testcase/${problemId}`);
     return response.data;
   } catch (error) {
     throw error.response?.data || error.message;
@@ -65,16 +33,7 @@ export const deleteTestcases = async (problemId) => {
 // Regenerate testcases for a problem
 export const regenerateTestcases = async (problemId) => {
   try {
-    const token = getAuthToken();
-    const response = await axios.put(
-      `${API_URL}/regenerate/${problemId}`,
-      {},
-      {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      }
-    );
+    const response = await api.put(`/api/generate-testcase/regenerate/${problemId}`, {});
     return response.data;
   } catch (error) {
     throw error.response?.data || error.message;
