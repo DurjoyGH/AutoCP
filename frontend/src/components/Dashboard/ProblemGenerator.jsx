@@ -714,14 +714,14 @@ const ProblemGenerator = () => {
             </div>
 
             {/* Action Buttons */}
-            <div className="grid grid-cols-4 gap-3">
-              <button
+            <div className="grid grid-cols-3 gap-3">
+              {/* <button
                 onClick={handleViewSolution}
                 className="py-3 bg-gradient-to-r from-purple-500/30 to-blue-500/30 hover:from-purple-500/40 hover:to-blue-500/40 border-2 border-purple-400/50 text-white font-semibold rounded-lg transition-all shadow-lg text-sm flex items-center justify-center gap-2"
               >
                 <FileCode size={16} />
                 Solution
-              </button>
+              </button> */}
               <button
                 onClick={handleViewTestcases}
                 className="py-3 bg-gradient-to-r from-cyan-500/30 to-green-500/30 hover:from-cyan-500/40 hover:to-green-500/40 border-2 border-cyan-400/50 text-white font-semibold rounded-lg transition-all shadow-lg text-sm flex items-center justify-center gap-2"
