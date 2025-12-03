@@ -3,10 +3,10 @@ const cors = require("cors");
 
 const app = express();
 
-// --- Allowed origins ---
-const allowedOrigins = [
-  'http://localhost:5173',
-];
+// --- Allowed origins from environment variable ---
+const allowedOrigins = process.env.CORS_ORIGIN 
+  ? process.env.CORS_ORIGIN.split(',').map(origin => origin.trim())
+  : ['http://localhost:5173'];
 
 // --- CORS Middleware ---
 app.use(cors({
