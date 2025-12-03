@@ -161,8 +161,10 @@ const History = () => {
       // Try to get existing testcases first
       try {
         const response = await getTestcases(problemId);
-        if (response.success) {
-          setTestcases(response.data);
+        if (response.success && response.data) {
+          // Extract testcases array from the response
+          const testcasesArray = response.data.testcases || [];
+          setTestcases(testcasesArray);
           setTestcaseLoading(false);
           return;
         }
@@ -174,8 +176,10 @@ const History = () => {
       const toastId = showToast.loading('Generating testcases...');
       const response = await generateTestcasesApi(problemId);
       
-      if (response.success) {
-        setTestcases(response.data);
+      if (response.success && response.data) {
+        // Extract testcases array from the response
+        const testcasesArray = response.data.testcases || [];
+        setTestcases(testcasesArray);
         showToast.dismiss(toastId);
         showToast.success('Testcases generated successfully!');
       }

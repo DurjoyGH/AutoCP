@@ -355,8 +355,14 @@ const ProblemGenerator = () => {
       // Try to get existing testcases first
       try {
         const response = await getTestcases(generatedProblem.id);
-        if (response.success) {
-          setTestcases(response.data);
+        console.log('getTestcases response:', response);
+        console.log('response.data:', response.data);
+        console.log('response.data.testcases:', response.data?.testcases);
+        if (response.success && response.data) {
+          // Extract testcases array from the response
+          const testcasesArray = response.data.testcases || [];
+          console.log('Extracted testcases array:', testcasesArray);
+          setTestcases(testcasesArray);
           setTestcaseLoading(false);
           return;
         }
@@ -368,9 +374,15 @@ const ProblemGenerator = () => {
       // Generate new testcases
       const toastId = showToast.loading('Generating testcases...');
       const response = await generateTestcasesApi(generatedProblem.id);
+      console.log('generateTestcases response:', response);
+      console.log('response.data:', response.data);
+      console.log('response.data.testcases:', response.data?.testcases);
       
-      if (response.success) {
-        setTestcases(response.data);
+      if (response.success && response.data) {
+        // Extract testcases array from the response
+        const testcasesArray = response.data.testcases || [];
+        console.log('Extracted testcases array:', testcasesArray);
+        setTestcases(testcasesArray);
         showToast.dismiss(toastId);
         showToast.success('Testcases generated successfully!');
       }
